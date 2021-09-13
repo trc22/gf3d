@@ -48,6 +48,8 @@ int main(int argc,char *argv[])
 	model = gf3d_model_load("dino");
 	gfc_matrix_identity(modelMat);
 
+    gf3d_vgraphics_rotate_camera(0.25, vector3d(0, 1, 0));
+
     while(!done)
     {
         SDL_PumpEvents();   // update SDL's internal event structures
@@ -61,10 +63,10 @@ int main(int argc,char *argv[])
             0.002,
             vector3d(1,0,0));*/
 
+
         if(keys[SDL_SCANCODE_W])
         {
             gfc_matrix_translate(modelMat, (vector3d(modelMat[0][1] * 0.1, modelMat[0][0] * -0.1, 0)));
-            slog("X Rotation: %f \n Y: Rotation: %f", modelMat[0][1], modelMat[0][0]);
         }
         if(keys[SDL_SCANCODE_S])
             gfc_matrix_translate(modelMat, (vector3d(modelMat[0][1] * -0.1, modelMat[0][0] * 0.1, 0)));
