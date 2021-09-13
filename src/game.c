@@ -63,11 +63,11 @@ int main(int argc,char *argv[])
 
         if(keys[SDL_SCANCODE_W])
         {
-            gfc_matrix_translate(modelMat, (vector3d(0 + (modelMat[0][1] * 0.1), -0.1 + (modelMat[1][0] * 0.1), 0)));
-            slog("X Rotation: %f", modelMat[0][1]);
+            gfc_matrix_translate(modelMat, (vector3d(modelMat[0][1] * 0.1, modelMat[0][0] * -0.1, 0)));
+            slog("X Rotation: %f \n Y: Rotation: %f", modelMat[0][1], modelMat[0][0]);
         }
         if(keys[SDL_SCANCODE_S])
-            gfc_matrix_translate(modelMat, vector3d(0 + (modelMat[0][1] * 0.1), 0.1 - (modelMat[1][0] * 0.1), 0));
+            gfc_matrix_translate(modelMat, (vector3d(modelMat[0][1] * -0.1, modelMat[0][0] * 0.1, 0)));
         if(keys[SDL_SCANCODE_A])
             gfc_matrix_rotate(
                 modelMat,
