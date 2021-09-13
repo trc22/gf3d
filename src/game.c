@@ -1,4 +1,4 @@
-#include <SDL.h>            
+#include <SDL.h>
 
 #include "simple_logger.h"
 #include "gfc_vector.h"
@@ -21,9 +21,7 @@ int main(int argc,char *argv[])
     VkCommandBuffer commandBuffer;
     Model *model;
     Matrix4 modelMat;
-    Model *model2;
-    Matrix4 modelMat2;
-    
+
     for (a = 1; a < argc;a++)
     {
         if (strcmp(argv[a],"-disable_validate") == 0)
@@ -31,13 +29,13 @@ int main(int argc,char *argv[])
             validate = 0;
         }
     }
-    
-    init_logger("gf3d.log");    
+
+    init_logger("gf3d.log");
     slog("gf3d begin");
     gf3d_vgraphics_init(
         "gf3d",                 //program name
-        1200,                   //screen width
-        700,                    //screen height
+        800,                   //screen width
+        600,                    //screen height
         vector4d(0.51,0.75,1,1),//background color
         0,                      //fullscreen
         validate                //validation
@@ -49,29 +47,40 @@ int main(int argc,char *argv[])
 	slog_sync();
 	model = gf3d_model_load("dino");
 	gfc_matrix_identity(modelMat);
-	model2 = gf3d_model_load("dino");
-    gfc_matrix_identity(modelMat2);
-    gfc_matrix_make_translation(
-            modelMat2,
-            vector3d(10,0,0)
-        );
+
     while(!done)
     {
         SDL_PumpEvents();   // update SDL's internal event structures
         keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
         //update game things here
-        
-        gf3d_vgraphics_rotate_camera(0.001);
-        gfc_matrix_rotate(
+
+       // gf3d_vgraphics_rotate_camera(0.001);
+      /*  gfc_matrix_rotate(
             modelMat,
             modelMat,
             0.002,
-            vector3d(1,0,0));
-        gfc_matrix_rotate(
-            modelMat2,
-            modelMat2,
-            0.002,
-            vector3d(0,0,1));
+            vector3d(1,0,0));*/
+
+        if(keys[SDL_SCANCODE_W])
+        {
+            gfc_matrix_translate(modelMat, (vector3d(0 + (modelMat[0][1] * 0.1), -0.1 + (modelMat[1][0] * 0.1), 0)));
+            slog("X Rotation: %f", modelMat[0][1]);
+        }
+        if(keys[SDL_SCANCODE_S])
+            gfc_matrix_translate(modelMat, vector3d(0 + (modelMat[0][1] * 0.1), 0.1 - (modelMat[1][0] * 0.1), 0));
+        if(keys[SDL_SCANCODE_A])
+            gfc_matrix_rotate(
+                modelMat,
+                modelMat,
+                0.01,
+                vector3d(0,0,1));
+        if(keys[SDL_SCANCODE_D])
+            gfc_matrix_rotate(
+                modelMat,
+                modelMat,
+                -0.01,
+                vector3d(0,0,1));
+
 
         // configure render command for graphics command pool
         // for each mesh, get a command and configure it from the pool
@@ -80,16 +89,15 @@ int main(int argc,char *argv[])
             commandBuffer = gf3d_command_rendering_begin(bufferFrame);
 
                 gf3d_model_draw(model,bufferFrame,commandBuffer,modelMat);
-                gf3d_model_draw(model2,bufferFrame,commandBuffer,modelMat2);
-                
+
             gf3d_command_rendering_end(commandBuffer);
-            
+
         gf3d_vgraphics_render_end(bufferFrame);
 
         if (keys[SDL_SCANCODE_ESCAPE])done = 1; // exit condition
-    }    
-    
-    vkDeviceWaitIdle(gf3d_vgraphics_get_default_logical_device());    
+    }
+
+    vkDeviceWaitIdle(gf3d_vgraphics_get_default_logical_device());
     //cleanup
     slog("gf3d program end");
     slog_sync();
