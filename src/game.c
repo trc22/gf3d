@@ -45,10 +45,10 @@ int main(int argc,char *argv[])
     // main game loop
     slog("gf3d main loop begin");
 	slog_sync();
-	model = gf3d_model_load("dino");
+	model = gf3d_model_load("misc");
 	gfc_matrix_identity(modelMat);
 
-    gf3d_vgraphics_rotate_camera(0.25, vector3d(0, 1, 0));
+    //gf3d_vgraphics_rotate_camera(0.25, vector3d(0, 1, 0));
 
     while(!done)
     {
@@ -66,10 +66,10 @@ int main(int argc,char *argv[])
 
         if(keys[SDL_SCANCODE_W])
         {
-            gfc_matrix_translate(modelMat, (vector3d(modelMat[0][1] * 0.1, modelMat[0][0] * -0.1, 0)));
+            gfc_matrix_translate(modelMat, (vector3d(modelMat[0][1] * 0.075, modelMat[0][0] * -0.075, 0)));
         }
         if(keys[SDL_SCANCODE_S])
-            gfc_matrix_translate(modelMat, (vector3d(modelMat[0][1] * -0.1, modelMat[0][0] * 0.1, 0)));
+            gfc_matrix_translate(modelMat, (vector3d(modelMat[0][1] * -0.075, modelMat[0][0] * 0.075, 0)));
         if(keys[SDL_SCANCODE_A])
             gfc_matrix_rotate(
                 modelMat,
