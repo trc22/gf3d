@@ -11,6 +11,9 @@
 #include "gf3d_camera.h"
 #include "gf3d_texture.h"
 
+#include "gf3d_entity.h"
+#include "player.h"
+
 int main(int argc,char *argv[])
 {
     int done = 0;
@@ -19,8 +22,6 @@ int main(int argc,char *argv[])
     const Uint8 * keys;
     Uint32 bufferFrame = 0;
     VkCommandBuffer commandBuffer;
-    Model *model;
-    Matrix4 modelMat;
 
     for (a = 1; a < argc;a++)
     {
@@ -42,13 +43,16 @@ int main(int argc,char *argv[])
     );
 	slog_sync();
 
+    gf3d_entity_manager_init(10);
+
+    player_spawn();
+
     // main game loop
     slog("gf3d main loop begin");
 	slog_sync();
-	model = gf3d_model_load("misc");
-	gfc_matrix_identity(modelMat);
 
     //gf3d_vgraphics_rotate_camera(0.25, vector3d(0, 1, 0));
+
 
     while(!done)
     {
@@ -64,37 +68,21 @@ int main(int argc,char *argv[])
             vector3d(1,0,0));*/
 
 
-        if(keys[SDL_SCANCODE_W])
-        {
-            gfc_matrix_translate(modelMat, (vector3d(modelMat[0][1] * 0.075, modelMat[0][0] * -0.075, 0)));
-        }
-        if(keys[SDL_SCANCODE_S])
-            gfc_matrix_translate(modelMat, (vector3d(modelMat[0][1] * -0.075, modelMat[0][0] * 0.075, 0)));
-        if(keys[SDL_SCANCODE_A])
-            gfc_matrix_rotate(
-                modelMat,
-                modelMat,
-                0.01,
-                vector3d(0,0,1));
-        if(keys[SDL_SCANCODE_D])
-            gfc_matrix_rotate(
-                modelMat,
-                modelMat,
-                -0.01,
-                vector3d(0,0,1));
-
-
         // configure render command for graphics command pool
         // for each mesh, get a command and configure it from the pool
+        gf3d_entity_update();
+
         bufferFrame = gf3d_vgraphics_render_begin();
         gf3d_pipeline_reset_frame(gf3d_vgraphics_get_graphics_pipeline(),bufferFrame);
             commandBuffer = gf3d_command_rendering_begin(bufferFrame);
 
-                gf3d_model_draw(model,bufferFrame,commandBuffer,modelMat);
+                gf3d_entity_draw(commandBuffer, bufferFrame);
 
             gf3d_command_rendering_end(commandBuffer);
 
         gf3d_vgraphics_render_end(bufferFrame);
+
+
 
         if (keys[SDL_SCANCODE_ESCAPE])done = 1; // exit condition
     }
