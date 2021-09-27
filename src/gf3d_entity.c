@@ -44,7 +44,7 @@ Entity *gf3d_entity_new()
     int i;
     for (i = 0; i < gf3d_entity_manager.entity_max; i++)
     {
-        if (gf3d_entity_manager.entity_list[i]._inuse)continue;
+        if (gf3d_entity_manager.entity_list[i]._inuse == 1)continue;
         //. found a free entity
         memset(&gf3d_entity_manager.entity_list[i],0,sizeof(Entity));
         gf3d_entity_manager.entity_list[i]._inuse = 1;
@@ -69,22 +69,44 @@ void gf3d_entity_free(Entity *self)
     }
 }
 
-void gf3d_entity_draw(VkCommandBuffer commandBuffer, Uint32 bufferFrame)
+void gf3d_entity_draw_all(VkCommandBuffer commandBuffer, Uint32 bufferFrame)
 {
     for(int i = 0; i < gf3d_entity_manager.entity_max; i++)
     {
         if(!gf3d_entity_manager.entity_list[i]._inuse) continue;
-        gf3d_model_draw(gf3d_entity_manager.entity_list[0].model, bufferFrame, commandBuffer, gf3d_entity_manager.entity_list[0].modelMat);
+        gf3d_model_draw(gf3d_entity_manager.entity_list[i].model, bufferFrame, commandBuffer, gf3d_entity_manager.entity_list[i].modelMat);
     }
 }
 
-void gf3d_entity_update()
+void gf3d_entity_update(Entity *ent)
+{
+    if (!ent)return;
+    if (!ent->_inuse)return;
+
+
+    if (ent->update != NULL)
+    {
+        ent->update(ent);
+    }
+}
+
+void gf3d_entity_update_all()
 {
     for(int i = 0; i < gf3d_entity_manager.entity_max; i++)
     {
         if(!gf3d_entity_manager.entity_list[i]._inuse) continue;
-        gf3d_entity_manager.entity_list[i].update(&gf3d_entity_manager.entity_list[i]);
+        gf3d_entity_update(&gf3d_entity_manager.entity_list[i]);
     }
 }
+
+Entity* gf3d_entity_create(char* modelName)
+{
+    Entity *ent = gf3d_entity_new();
+    ent->model = gf3d_model_load(modelName);
+    gfc_matrix_identity(ent->modelMat);
+
+    return ent;
+}
+
 
 /*eol@eof*/

@@ -45,13 +45,17 @@ int main(int argc,char *argv[])
 
     gf3d_entity_manager_init(10);
 
+
     player_spawn();
+
+    gf3d_entity_create("cube");
 
     // main game loop
     slog("gf3d main loop begin");
 	slog_sync();
 
-    //gf3d_vgraphics_rotate_camera(0.25, vector3d(0, 1, 0));
+    gf3d_vgraphics_rotate_camera(-0.25, vector3d(1, 0, 0));
+    gf3d_vgraphics_rotate_camera(90, vector3d(0, 0, 1));
 
 
     while(!done)
@@ -60,28 +64,21 @@ int main(int argc,char *argv[])
         keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
         //update game things here
 
-       // gf3d_vgraphics_rotate_camera(0.001);
-      /*  gfc_matrix_rotate(
-            modelMat,
-            modelMat,
-            0.002,
-            vector3d(1,0,0));*/
 
+        gf3d_entity_update_all();
 
         // configure render command for graphics command pool
         // for each mesh, get a command and configure it from the pool
-        gf3d_entity_update();
 
         bufferFrame = gf3d_vgraphics_render_begin();
         gf3d_pipeline_reset_frame(gf3d_vgraphics_get_graphics_pipeline(),bufferFrame);
             commandBuffer = gf3d_command_rendering_begin(bufferFrame);
 
-                gf3d_entity_draw(commandBuffer, bufferFrame);
+                gf3d_entity_draw_all(commandBuffer, bufferFrame);
 
             gf3d_command_rendering_end(commandBuffer);
 
         gf3d_vgraphics_render_end(bufferFrame);
-
 
 
         if (keys[SDL_SCANCODE_ESCAPE])done = 1; // exit condition

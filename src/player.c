@@ -5,11 +5,10 @@ void player_update(Entity *ent);
 
 Entity * player_spawn()
 {
-    Entity *ent = gf3d_entity_new();
-    ent->model = gf3d_model_load("misc");
-    gfc_matrix_identity(ent->modelMat);
+    Entity *ent = gf3d_entity_create("misc");
 
     ent->update = player_update;
+
     return ent;
 }
 

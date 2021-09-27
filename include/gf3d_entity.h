@@ -14,7 +14,7 @@ typedef struct Entity_S
 {
     Uint8           _inuse;         /**<flag to keep track if this isntance is in use and should not be reassigned*/
     Model          *model;          /**<the 3d model for this entity*/
-    Matrix4         modelMat;
+    Matrix4         modelMat;       /**<orientation matrix for the model*/
     Vector3D        position;       /**<position of the entity in 3d space*/
     Vector3D        velocity;       /**<velocity of the entity in 3d space*/
     Vector3D        acceleration;   /**<acceleration of the entity in 3d space*/
@@ -52,9 +52,13 @@ Entity *gf3d_entity_new();
  */
 void gf3d_entity_free(Entity *self);
 
-void gf3d_entity_update();
+Entity* gf3d_entity_create(char* modelName);
 
-void gf3d_entity_draw(VkCommandBuffer commandBuffer, Uint32 bufferFrame);
+void gf3d_entity_update(Entity *ent);
+
+void gf3d_entity_update_all();
+
+void gf3d_entity_draw_all(VkCommandBuffer commandBuffer, Uint32 bufferFrame);
 
 
 #endif
