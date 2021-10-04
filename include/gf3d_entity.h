@@ -5,9 +5,8 @@
 
 typedef enum
 {
-    ES_Idle = 0,
-    ES_Dying = 1,
-    ES_Dead = 2
+    Default,
+    Pause
 }EntityState;
 
 typedef struct Entity_S
@@ -26,10 +25,7 @@ typedef struct Entity_S
     void (*touch) (struct Entity_S* self,struct Entity_S* other);   /**<function called on entity think*/
     float           health;
     float           healthmax;
-    float           armor;
-    float           experience;
-    float           level;
-    float           otherStuff;
+    int camera_mode;
     void *data;                     /**<additional entity specific data*/
 
 }Entity;
@@ -52,13 +48,15 @@ Entity *gf3d_entity_new();
  */
 void gf3d_entity_free(Entity *self);
 
-Entity* gf3d_entity_create(char* modelName);
-
 void gf3d_entity_update(Entity *ent);
 
 void gf3d_entity_update_all();
 
+void gf3d_entity_draw(Entity *ent, VkCommandBuffer commandBuffer, Uint32 bufferFrame);
+
 void gf3d_entity_draw_all(VkCommandBuffer commandBuffer, Uint32 bufferFrame);
+
+Entity* gf3d_entity_create(char* modelName);
 
 
 #endif

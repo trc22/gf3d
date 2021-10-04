@@ -6,7 +6,7 @@
 
 Entity * player_spawn();
 
-
+void player_camera_fps(Entity* ent);
 
 
 
