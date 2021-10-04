@@ -48,7 +48,6 @@ int main(int argc,char *argv[])
 
     player_spawn();
 
-    gf3d_entity_create("cube");
 
     // main game loop
     slog("gf3d main loop begin");

@@ -19,8 +19,6 @@ Entity * player_spawn()
 
     ent->camera_mode = 0;
 
-    gfc_matrix_identity(start);
-
     return ent;
 }
 
@@ -60,7 +58,7 @@ void player_update(Entity *ent)
                 else
                 {
                     slog("Returning to start camera");
-                    //gf3d_vgraphics_set_camera_matrix(start);
+                    //gf3d_camera_get_view(start);
                     ent->camera_mode = 0;
                 }
 
@@ -78,13 +76,8 @@ void player_update(Entity *ent)
 
 void player_camera_fps(Entity* ent)
 {
-    gfc_matrix_slog(ent->modelMat);
-    Matrix4 mat;
-    gfc_matrix_identity(mat);
+    //gfc_matrix_slog(ent->modelMat);
     slog("Switching to fps");
-
-    //gf3d_vgraphics_rotate_camera(-1.570796, vector3d(1, 0, 0));
-    //gf3d_vgraphics_rotate_camera((-1.570796 * 2), vector3d(0, 0, 1));
-
+    gf3d_camera_set_view(ent->modelMat);
     ent->camera_mode = 1;
 }
