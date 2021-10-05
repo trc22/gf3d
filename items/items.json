@@ -1,0 +1,13 @@
+{   "test item":
+    {
+        "name":"test item",
+        "id":"0",
+        "type":"1"
+    },
+    "pistol":
+    {
+        "name":"pistol",
+        "id":"1",
+        "type":"0"
+    }
+}
