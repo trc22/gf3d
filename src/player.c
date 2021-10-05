@@ -21,8 +21,8 @@ Entity * player_spawn()
     ent->camera_mode = 0;
 
     inventory_init(8);
-    inventory_item_create(0, "Test item", I_Key);
-
+//    inventory_item_create(0, "Test item", I_Key);
+    inventory_load_item("test item");
 
     return ent;
 }

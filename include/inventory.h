@@ -38,7 +38,7 @@ void inventory_close();
 
 Item* inventory_item_create(int id, char* name, ItemType type);
 
-
+Item* inventory_load_item(char* item_name);
 
 
 #endif

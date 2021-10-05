@@ -2,7 +2,7 @@
 #include <string.h>
 
 #include "simple_logger.h"
-
+#include "simple_json.h"
 
 #include "inventory.h"
 
@@ -93,11 +93,61 @@ Item* inventory_item_create(int id, char* name, ItemType type)
     Item* item;
     item = inventory_item_new();
 
+    if(!item)
+    {
+        slog("Error! Item not loaded properly");
+    }
+
     item->id = id;
     item->name = name;
     item->type = type;
 
     slog("Item %s created and added to inventory", item->name);
+
+    return item;
+}
+
+Item* inventory_load_item(char* item_name)
+{
+    SJson* json, *sj_item;
+    SJson *sj_id, *sj_name, *sj_type;
+
+    Item* item;
+    int id;
+    char* name;
+    int type;
+
+    json = sj_load("items/items.json");
+
+    if(!json)
+    {
+        slog("Error! Items Json file not loaded");
+        return NULL;
+    }
+
+    sj_item = sj_object_get_value(json, item_name);
+
+    if(!sj_item || sj_item == NULL)
+    {
+        slog("Error! Item not loaded");
+        return NULL;
+    }
+
+    sj_id = sj_object_get_value(sj_item, "id");
+    sj_get_integer_value(sj_id, &id);
+    slog("Item id: %i", id);
+
+    sj_name = sj_object_get_value(sj_item, "name");
+    name = (char*)sj_get_string_value(sj_name);
+    slog("Item name: %s", name);
+
+    sj_type = sj_object_get_value(sj_item, "type");
+    sj_get_integer_value(sj_type, &type);
+    slog("Item type: %i", type);
+
+    item = inventory_item_create(id, name, type);
+
+    sj_free(json);
 
     return item;
 }
