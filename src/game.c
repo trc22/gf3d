@@ -48,7 +48,6 @@ int main(int argc,char *argv[])
 
     player_spawn();
 
-
     // main game loop
     slog("gf3d main loop begin");
 	slog_sync();

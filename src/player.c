@@ -4,6 +4,7 @@
 #include "gf3d_camera.h"
 
 #include "player.h"
+#include "inventory.h"
 
 Matrix4 start;
 
@@ -18,6 +19,10 @@ Entity * player_spawn()
     ent->update = player_update;
 
     ent->camera_mode = 0;
+
+    inventory_init(8);
+    inventory_item_create(0, "Test item", I_Key);
+
 
     return ent;
 }
