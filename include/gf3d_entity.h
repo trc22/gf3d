@@ -2,6 +2,7 @@
 #define __GF3D_ENTITY_H__
 
 #include "gf3d_model.h"
+#include "interactable.h"
 
 typedef enum
 {
@@ -23,6 +24,7 @@ typedef struct Entity_S
     void (*think) (struct Entity_S* self);   /**<function called on entity think*/
     void (*update)(struct Entity_S* self);   /**<function called on entity update*/
     void (*touch) (struct Entity_S* self,struct Entity_S* other);   /**<function called on entity think*/
+    Interactable*   interactable;
     float           health;
     float           healthmax;
     int camera_mode;
@@ -58,5 +60,6 @@ void gf3d_entity_draw_all(VkCommandBuffer commandBuffer, Uint32 bufferFrame);
 
 Entity* gf3d_entity_create(char* modelName);
 
+Entity* gf3d_entity_create_interactable(char* modelName, InteractType type, char* name);
 
 #endif

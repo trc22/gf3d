@@ -5,6 +5,7 @@
 
 #include "player.h"
 #include "inventory.h"
+#include "interactable.h"
 
 Matrix4 start;
 
@@ -14,7 +15,7 @@ void player_update(Entity *ent);
 
 Entity * player_spawn()
 {
-    Entity *ent = gf3d_entity_create("misc");
+    Entity *ent = gf3d_entity_create("dino");
 
     ent->update = player_update;
 

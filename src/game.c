@@ -12,7 +12,9 @@
 #include "gf3d_texture.h"
 
 #include "gf3d_entity.h"
+#include "interactable.h"
 #include "player.h"
+
 
 int main(int argc,char *argv[])
 {
@@ -44,10 +46,12 @@ int main(int argc,char *argv[])
 	slog_sync();
 
     gf3d_entity_manager_init(10);
+    interactable_init(5);
 
 
     player_spawn();
 
+    gf3d_entity_create_interactable("cube", 1, "test interact");
     // main game loop
     slog("gf3d main loop begin");
 	slog_sync();

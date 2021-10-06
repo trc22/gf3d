@@ -123,5 +123,21 @@ Entity* gf3d_entity_create(char* modelName)
 
 }
 
+Entity* gf3d_entity_create_interactable(char* modelName, InteractType type, char* name)
+{
+    Entity *ent = gf3d_entity_create(modelName);
+    if(!ent)
+    {
+        slog("Failed to create entity %s", modelName);
+        return NULL;
+    }
+    ent->interactable = interactable_new();
+    ent->interactable->name = name;
+
+    slog("Interactable name: %s", ent->interactable->name);
+    return ent;
+
+}
+
 
 /*eol@eof*/

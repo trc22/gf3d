@@ -50,7 +50,7 @@ Item* inventory_item_new()
         inventory.item_list[i]._inuse = 1;
         return &inventory.item_list[i];
     }
-    slog("request for entity failed: all full up");
+    slog("request for item failed: inventory is full");
     return NULL;
 }
 
