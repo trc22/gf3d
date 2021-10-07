@@ -706,5 +706,20 @@ VkImageView gf3d_vgraphics_create_image_view(VkImage image, VkFormat format)
     return imageView;
 }
 
+void gf3d_vgraphics_get_camera(Matrix4 out)
+{
+    gfc_matrix_copy(out, gf3d_vgraphics.ubo.view);
+}
+
+void gf3d_vgraphics_modify_camera(Matrix4 in)
+{
+    gfc_matrix_copy(gf3d_vgraphics.ubo.view, in);
+}
+
+Vector3D gf3d_vgraphics_get_camera_position()
+{
+    return vector3d(gf3d_vgraphics.ubo.view[0][3],gf3d_vgraphics.ubo.view[1][3], gf3d_vgraphics.ubo.view[2][3]);
+}
+
 /*eol@eof*/
 

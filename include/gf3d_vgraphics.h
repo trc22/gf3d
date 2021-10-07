@@ -53,5 +53,11 @@ Command *gf3d_vgraphics_get_graphics_command_pool();
 
 VkImageView gf3d_vgraphics_create_image_view(VkImage image, VkFormat format);
 
+void gf3d_vgraphics_get_camera(Matrix4 out);
+
+void gf3d_vgraphics_modify_camera(Matrix4 in);
+
+Vector3D gf3d_vgraphics_get_camera_position();
+
 
 #endif
