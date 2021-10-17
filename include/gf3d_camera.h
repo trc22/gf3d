@@ -3,6 +3,8 @@
 
 #include "gfc_matrix.h"
 
+void gf3d_camera_init();
+
 /**
  * @brief get the current camera view
  * @param view output, the matrix provided will be populated with the current camera information

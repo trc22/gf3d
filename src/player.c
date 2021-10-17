@@ -7,6 +7,7 @@
 #include "inventory.h"
 #include "interactable.h"
 
+#include <math.h>
 Matrix4 start;
 
 int input_timer = 250;
@@ -38,21 +39,26 @@ void player_update(Entity *ent)
 
 
     ent->position = vector3d(ent->modelMat[3][0],ent->modelMat[3][1], ent->modelMat[3][2]);
+    ent->rotation = vector3d(ent->modelMat[0][0], ent->modelMat[0][1], ent->modelMat[0][2]);
 
 
         if(keys[SDL_SCANCODE_W])
         {
             gfc_matrix_translate(ent->modelMat, (vector3d(ent->modelMat[0][1] * 0.075, ent->modelMat[0][0] * -0.075, 0)));
-                slog("%f, %f, %f", ent->position.x,ent->position.y, ent->position.z);
+                //slog("%f, %f, %f", ent->position.x,ent->position.y, ent->position.z);
         }
         if(keys[SDL_SCANCODE_S])
             gfc_matrix_translate(ent->modelMat, (vector3d(ent->modelMat[0][1] * -0.075, ent->modelMat[0][0] * 0.075, 0)));
         if(keys[SDL_SCANCODE_A])
+        {
             gfc_matrix_rotate(
                 ent->modelMat,
                 ent->modelMat,
                 0.0075,
                 vector3d(0,0,1));
+            //gfc_matrix_slog(ent->modelMat);
+            //slog("___");
+        }
         if(keys[SDL_SCANCODE_D])
             gfc_matrix_rotate(
                 ent->modelMat,
@@ -75,12 +81,13 @@ void player_update(Entity *ent)
 void player_camera_fps(Entity* ent)
 {
     Matrix4 mat;
-    gf3d_vgraphics_get_camera(mat);
-    mat[3][0] = ent->position.x;
-    mat[3][1] = ent->position.z;
-    mat[3][2] = ent->position.y;
-    gf3d_vgraphics_modify_camera(mat);
+    Vector3D camera_pos;
 
+    gfc_matrix_identity(mat);
+
+    camera_pos = vector3d(ent->position.x + 20 * cos(ent->rotation.x), ent->position.y + 20 * sin(ent->rotation.y), 2);
+    gfc_matrix_view(mat, camera_pos, ent->position, vector3d(0, 0, 1));
+    gf3d_vgraphics_modify_camera(mat);
     /*if(ent->camera_mode == 1)
     {
         slog("Returning to start camera");

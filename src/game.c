@@ -48,6 +48,7 @@ int main(int argc,char *argv[])
     gf3d_entity_manager_init(10);
     interactable_init(5);
 
+    gf3d_camera_init();
 
     player_spawn();
 
@@ -55,9 +56,6 @@ int main(int argc,char *argv[])
     // main game loop
     slog("gf3d main loop begin");
 	slog_sync();
-
-    gf3d_vgraphics_rotate_camera(-0.25, vector3d(1, 0, 0));
-    gf3d_vgraphics_rotate_camera(90, vector3d(0, 0, 1));
 
 
     while(!done)

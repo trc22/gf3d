@@ -713,7 +713,9 @@ void gf3d_vgraphics_get_camera(Matrix4 out)
 
 void gf3d_vgraphics_modify_camera(Matrix4 in)
 {
-    gfc_matrix_copy(gf3d_vgraphics.ubo.view, in);
+    //gfc_matrix_copy(gf3d_vgraphics.ubo.view, in);
+    memcpy(gf3d_vgraphics.ubo.view,in,sizeof(Matrix4));
+    //gfc_matrix_multiply(gf3d_vgraphics.ubo.view, (gf3d_vgraphics.ubo.view,in);
 }
 
 Vector3D gf3d_vgraphics_get_camera_position()
