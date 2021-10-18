@@ -57,7 +57,6 @@ void gf3d_vgraphics_get_camera(Matrix4 out);
 
 void gf3d_vgraphics_modify_camera(Matrix4 in);
 
-Vector3D gf3d_vgraphics_get_camera_position();
-
+Matrix4* gf3d_vgraphics_get_view_matrix();
 
 #endif

@@ -4,7 +4,7 @@
 #include "gf3d_entity.h"
 #include "gfc_matrix.h"
 
-Entity * player_spawn();
+Entity * player_spawn(Vector3D position);
 
 void player_camera_fps(Entity* ent);
 

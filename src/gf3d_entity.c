@@ -48,7 +48,10 @@ Entity *gf3d_entity_new()
         //. found a free entity
         memset(&gf3d_entity_manager.entity_list[i],0,sizeof(Entity));
         gf3d_entity_manager.entity_list[i]._inuse = 1;
+
         gfc_matrix_identity(gf3d_entity_manager.entity_list[i].modelMat);
+        gf3d_entity_manager.entity_list[i].scale = vector3d(1, 1, 1);
+
         return &gf3d_entity_manager.entity_list[i];
     }
     slog("request for entity failed: all full up");
@@ -92,6 +95,19 @@ void gf3d_entity_update(Entity *ent)
 {
     if (!ent)return;
     if (!ent->_inuse)return;
+
+    vector3d_add(ent->position, ent->position, ent->velocity);
+    vector3d_add(ent->velocity, ent->velocity, ent->acceleration);
+
+
+    gfc_matrix_identity(ent->modelMat);
+    gfc_matrix_scale(ent->modelMat, ent->scale, ent->modelMat);
+
+    gfc_matrix_rotate(ent->modelMat, ent->modelMat, ent->rotation.z, vector3d(0, 0, 1));
+    gfc_matrix_rotate(ent->modelMat, ent->modelMat, ent->rotation.y, vector3d(0, 1, 0));
+    gfc_matrix_rotate(ent->modelMat, ent->modelMat, ent->rotation.x, vector3d(1, 0, 0));
+
+    gfc_matrix_translate(ent->modelMat, ent->position);
 
 
     if (ent->update != NULL)

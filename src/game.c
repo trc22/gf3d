@@ -14,6 +14,7 @@
 #include "gf3d_entity.h"
 #include "interactable.h"
 #include "player.h"
+#include "room.h"
 
 
 int main(int argc,char *argv[])
@@ -48,15 +49,20 @@ int main(int argc,char *argv[])
     gf3d_entity_manager_init(10);
     interactable_init(5);
 
-    gf3d_camera_init();
+    room_load("room");
 
-    player_spawn();
+    player_spawn(vector3d(1, 1, 1));
 
     gf3d_entity_create_interactable("cube", 1, "test interact");
+
+
     // main game loop
     slog("gf3d main loop begin");
 	slog_sync();
 
+    gf3d_camera_set_scale(vector3d(1, 1, 1));
+    gf3d_camera_set_rotation(vector3d(1.57, 0, 3.14));
+    gf3d_camera_set_position(vector3d(1, 1, 20));
 
     while(!done)
     {
@@ -70,10 +76,15 @@ int main(int argc,char *argv[])
         // configure render command for graphics command pool
         // for each mesh, get a command and configure it from the pool
 
+
+       gf3d_camera_update_view();
+       gf3d_camera_get_view(gf3d_vgraphics_get_view_matrix());
+
         bufferFrame = gf3d_vgraphics_render_begin();
         gf3d_pipeline_reset_frame(gf3d_vgraphics_get_graphics_pipeline(),bufferFrame);
             commandBuffer = gf3d_command_rendering_begin(bufferFrame);
 
+                room_draw(commandBuffer, bufferFrame);
                 gf3d_entity_draw_all(commandBuffer, bufferFrame);
 
             gf3d_command_rendering_end(commandBuffer);

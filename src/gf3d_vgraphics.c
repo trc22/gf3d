@@ -713,15 +713,12 @@ void gf3d_vgraphics_get_camera(Matrix4 out)
 
 void gf3d_vgraphics_modify_camera(Matrix4 in)
 {
-    //gfc_matrix_copy(gf3d_vgraphics.ubo.view, in);
     memcpy(gf3d_vgraphics.ubo.view,in,sizeof(Matrix4));
-    //gfc_matrix_multiply(gf3d_vgraphics.ubo.view, (gf3d_vgraphics.ubo.view,in);
 }
 
-Vector3D gf3d_vgraphics_get_camera_position()
+Matrix4 * gf3d_vgraphics_get_view_matrix()
 {
-    return vector3d(gf3d_vgraphics.ubo.view[0][3],gf3d_vgraphics.ubo.view[1][3], gf3d_vgraphics.ubo.view[2][3]);
+    return &gf3d_vgraphics.ubo.view;
 }
-
 /*eol@eof*/
 

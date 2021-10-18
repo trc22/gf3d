@@ -13,13 +13,14 @@ Matrix4 start;
 int input_timer = 250;
 
 void player_update(Entity *ent);
+void player_think(Entity *ent);
 
-Entity * player_spawn()
+Entity * player_spawn(Vector3D position)
 {
     Entity *ent = gf3d_entity_create("dino");
 
     ent->update = player_update;
-    ent->position = vector3d(ent->modelMat[3][0],ent->modelMat[3][1], ent->modelMat[3][2]);
+    //ent->position = vector3d(ent->modelMat[3][0],ent->modelMat[3][1], ent->modelMat[3][2]);
     slog("%f, %f, %f", ent->modelMat[3][0],ent->modelMat[3][1], ent->modelMat[3][2]);
 
     ent->camera_mode = 0;
@@ -28,6 +29,8 @@ Entity * player_spawn()
 
     inventory_load_item("test item");
     inventory_load_item("pistol");
+
+    vector3d_dup(ent->position);
 
     return ent;
 }
@@ -38,33 +41,23 @@ void player_update(Entity *ent)
     keys = SDL_GetKeyboardState(NULL);
 
 
-    ent->position = vector3d(ent->modelMat[3][0],ent->modelMat[3][1], ent->modelMat[3][2]);
-    ent->rotation = vector3d(ent->modelMat[0][0], ent->modelMat[0][1], ent->modelMat[0][2]);
-
-
         if(keys[SDL_SCANCODE_W])
         {
-            gfc_matrix_translate(ent->modelMat, (vector3d(ent->modelMat[0][1] * 0.075, ent->modelMat[0][0] * -0.075, 0)));
+            //gfc_matrix_translate(ent->modelMat, (vector3d(ent->modelMat[0][1] * 0.075, ent->modelMat[0][0] * -0.075, 0)));    ent->position = vector3d(ent->modelMat[3][0],ent->modelMat[3][1], ent->modelMat[3][2]);
+            ent->position.x += 0.1 * (sin(ent->rotation.z));
+            ent->position.y -= 0.1 * (cos(ent->rotation.z));
                 //slog("%f, %f, %f", ent->position.x,ent->position.y, ent->position.z);
         }
         if(keys[SDL_SCANCODE_S])
-            gfc_matrix_translate(ent->modelMat, (vector3d(ent->modelMat[0][1] * -0.075, ent->modelMat[0][0] * 0.075, 0)));
-        if(keys[SDL_SCANCODE_A])
         {
-            gfc_matrix_rotate(
-                ent->modelMat,
-                ent->modelMat,
-                0.0075,
-                vector3d(0,0,1));
-            //gfc_matrix_slog(ent->modelMat);
-            //slog("___");
+            ent->position.x -= 0.1 * (sin(ent->rotation.z));
+            ent->position.y += 0.1 * (cos(ent->rotation.z));
         }
+
+        if(keys[SDL_SCANCODE_A])
+            ent->rotation.z += 0.0075;
         if(keys[SDL_SCANCODE_D])
-            gfc_matrix_rotate(
-                ent->modelMat,
-                ent->modelMat,
-                -0.0075,
-                vector3d(0,0,1));
+            ent->rotation.z -= 0.0075;
 
         if(input_timer == 250)
         {   if(keys[SDL_SCANCODE_LSHIFT])
@@ -80,23 +73,16 @@ void player_update(Entity *ent)
 
 void player_camera_fps(Entity* ent)
 {
-    Matrix4 mat;
-    Vector3D camera_pos;
 
-    gfc_matrix_identity(mat);
-
-    camera_pos = vector3d(ent->position.x + 20 * cos(ent->rotation.x), ent->position.y + 20 * sin(ent->rotation.y), 2);
-    gfc_matrix_view(mat, camera_pos, ent->position, vector3d(0, 0, 1));
-    gf3d_vgraphics_modify_camera(mat);
-    /*if(ent->camera_mode == 1)
+    if(ent->camera_mode == 1)
     {
         slog("Returning to start camera");
-        gfc_matrix_translate(mat, vector3d(0, -1, -25));
         ent->camera_mode = 0;
         return;
     }
-    gfc_matrix_translate(mat, vector3d(0, 0, 25));
-    gf3d_camera_set_view(mat);
-    //gf3d_camera_look_at(gf3d_vgraphics_get_camera_position(), ent->position, vector3d(0, 0, 1));
-    ent->camera_mode = 1;*/
+
+    gf3d_camera_set_rotation(vector3d(1.57, 0, ent->rotation.z + 3.14));
+    gf3d_camera_set_position(vector3d(ent->position.x, 2, ent->position.y));
+
+    ent->camera_mode = 1;
 }
