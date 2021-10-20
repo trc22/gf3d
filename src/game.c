@@ -62,7 +62,6 @@ int main(int argc,char *argv[])
 
     gf3d_camera_set_scale(vector3d(1,1,1));
     gf3d_camera_set_position(vector3d(1, 10, 1));
-
     gf3d_camera_set_rotation(vector3d(3.14, 0, 3.14));
 
 
