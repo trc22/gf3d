@@ -20,7 +20,6 @@ Entity * player_spawn(Vector3D position)
     Entity *ent = gf3d_entity_create("dino");
 
     ent->update = player_update;
-    //ent->position = vector3d(ent->modelMat[3][0],ent->modelMat[3][1], ent->modelMat[3][2]);
     slog("%f, %f, %f", ent->modelMat[3][0],ent->modelMat[3][1], ent->modelMat[3][2]);
 
     ent->camera_mode = 0;
@@ -74,15 +73,18 @@ void player_update(Entity *ent)
 void player_camera_fps(Entity* ent)
 {
 
-    if(ent->camera_mode == 1)
+  /*  if(ent->camera_mode == 1)
     {
         slog("Returning to start camera");
         ent->camera_mode = 0;
         return;
-    }
+    }*/
+    Vector3D cameraPos;
 
     gf3d_camera_set_rotation(vector3d(1.57, 0, ent->rotation.z + 3.14));
-    gf3d_camera_set_position(vector3d(ent->position.x, 2, ent->position.y));
+
+    cameraPos = vector3d(ent->position.x + 20 * cos(ent->rotation.z), ent->position.z, ent->position.y + 20 * sin(ent->rotation.z));
+    gf3d_camera_look_at(cameraPos, ent->position, vector3d(0, 0, 1));
 
     ent->camera_mode = 1;
 }
