@@ -79,12 +79,13 @@ void player_camera_fps(Entity* ent)
         ent->camera_mode = 0;
         return;
     }*/
-    Vector3D cameraPos;
+   // Vector3D cameraPos;
 
-    gf3d_camera_set_rotation(vector3d(1.57, 0, ent->rotation.z + 3.14));
+    gf3d_camera_set_position(ent->position);
+    gf3d_camera_set_rotation(vector3d(3.14, 0, 3.14 + ent->rotation.z));
 
-    cameraPos = vector3d(ent->position.x + 20 * cos(ent->rotation.z), ent->position.z, ent->position.y + 20 * sin(ent->rotation.z));
-    gf3d_camera_look_at(cameraPos, ent->position, vector3d(0, 0, 1));
+   // cameraPos = vector3d(ent->position.x + 20 * cos(ent->rotation.z), ent->position.z, ent->position.y + 20 * sin(ent->rotation.z));
+   // gf3d_camera_look_at(cameraPos, ent->position, vector3d(0, 0, 1));
 
     ent->camera_mode = 1;
 }

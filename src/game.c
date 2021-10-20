@@ -60,9 +60,11 @@ int main(int argc,char *argv[])
     slog("gf3d main loop begin");
 	slog_sync();
 
-    gf3d_camera_set_scale(vector3d(1, 1, 1));
-    gf3d_camera_set_rotation(vector3d(1.57, 0, 3.14));
-    gf3d_camera_set_position(vector3d(1, 1, 20));
+    gf3d_camera_set_scale(vector3d(1,1,1));
+    gf3d_camera_set_position(vector3d(1, 10, 1));
+
+    gf3d_camera_set_rotation(vector3d(3.14, 0, 3.14));
+
 
     while(!done)
     {
