@@ -86,6 +86,8 @@ void gf3d_entity_draw_all(VkCommandBuffer commandBuffer, Uint32 bufferFrame)
     for(int i = 0; i < gf3d_entity_manager.entity_max; i++)
     {
         if(!gf3d_entity_manager.entity_list[i]._inuse) continue;
+        if(gf3d_entity_manager.entity_list[i].camera_mode == 1)
+            continue;
 
         gf3d_entity_draw(&gf3d_entity_manager.entity_list[i], commandBuffer, bufferFrame);
     }
