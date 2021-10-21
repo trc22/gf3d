@@ -56,16 +56,24 @@ void player_update(Entity *ent)
         }
         if(keys[SDL_SCANCODE_A])
         {
-            ent->rotation.z += 0.0075;
             if(ent->camera_mode == 1)
+            {
+                ent->rotation.z += 0.0025;
                 gf3d_camera_set_rotation(vector3d(3.14, 0, 3.14 + ent->rotation.z));
+            }
+            else
+                ent->rotation.z += 0.0075;
+
         }
         if(keys[SDL_SCANCODE_D])
         {
-            ent->rotation.z -= 0.0075;
             if(ent->camera_mode == 1)
+            {
+                ent->rotation.z -= 0.0025;
                 gf3d_camera_set_rotation(vector3d(3.14, 0, 3.14 + ent->rotation.z));
-
+            }
+            else
+                ent->rotation.z -= 0.0075;
         }
 
         if(input_timer == 250)
