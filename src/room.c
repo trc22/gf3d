@@ -1,5 +1,6 @@
-#include "room.h"
 #include "simple_logger.h"
+
+#include "room.h"
 
 Room *room;
 

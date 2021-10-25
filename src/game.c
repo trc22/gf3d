@@ -15,6 +15,7 @@
 #include "interactable.h"
 #include "player.h"
 #include "room.h"
+#include "fixed_camera_system.h"
 
 
 int main(int argc,char *argv[])
@@ -50,6 +51,8 @@ int main(int argc,char *argv[])
     interactable_init(5);
 
     room_load("room");
+
+    fixed_camera_system_init(3);
 
     player_spawn(vector3d(1, 1, 1));
 

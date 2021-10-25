@@ -1,30 +1,34 @@
 #ifndef __FIXED_CAMERA_SYSTEM_H__
 #define __FIXED_CAMERA_SYSTEM_H__
 
+#include "gfc_types.h"
+
 typedef struct FixedCamera_S
 {
-    Uint32 _inuse;
+    Uint8 _inuse;
     int id;
 
-    bool isCurrent;
+    int isCurrent;
 
     Vector3D scale;
     Vector3D rotation;
     Vector3D position;
 
+    void *data;
+
 }FixedCamera;
 
-void fixed_camera_system_init(uint32 numCameras);
+void fixed_camera_system_init(Uint32 num_cameras);
 
-void fixed_camera_system_update();
+void fixed_camera_switch(int id);
 
-void fixed_camera_new();
+FixedCamera* fixed_camera_new();
 
 void fixed_camera_free(FixedCamera *camera);
 
 void fixed_camera_free_all();
 
-void fixed_camera_system_free();
+void fixed_camera_system_close();
 
 
 #endif
