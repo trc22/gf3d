@@ -12,8 +12,12 @@ typedef struct Room_S
 
     char *name;
 
+
+
     void *data;
 }Room;
+
+void room_init();
 
 void room_new();
 
