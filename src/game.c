@@ -15,7 +15,6 @@
 #include "interactable.h"
 #include "player.h"
 #include "room.h"
-#include "fixed_camera_system.h"
 
 
 int main(int argc,char *argv[])
@@ -52,8 +51,6 @@ int main(int argc,char *argv[])
 
     room_load("room");
 
-    fixed_camera_system_init(3);
-
     player_spawn(vector3d(1, 1, 1));
 
     gf3d_entity_create_interactable("cube", 1, "test interact");
@@ -66,6 +63,8 @@ int main(int argc,char *argv[])
     gf3d_camera_set_scale(vector3d(1,1,1));
     gf3d_camera_set_position(vector3d(1, 10, 1));
     gf3d_camera_set_rotation(vector3d(3.14, 0, 3.14));
+
+    room_set_camera(vector3d(1, 10, 1),vector3d(3.14, 0, 3.14));
 
 
     while(!done)

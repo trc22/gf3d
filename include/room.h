@@ -3,6 +3,7 @@
 
 #include "gfc_matrix.h"
 #include "gf3d_model.h"
+#include "gf3d_camera.h"
 
 typedef struct Room_S
 {
@@ -12,7 +13,7 @@ typedef struct Room_S
 
     char *name;
 
-
+    Camera* currentCamera;
 
     void *data;
 }Room;
@@ -26,5 +27,9 @@ void room_load(char* room_name);
 void room_draw(VkCommandBuffer commandBuffer, Uint32 bufferFrame);
 
 void room_free();
+
+void room_set_camera(Vector3D pos, Vector3D rot);
+
+void room_camera_enable();
 
 #endif

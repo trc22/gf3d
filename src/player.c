@@ -6,6 +6,7 @@
 #include "player.h"
 #include "inventory.h"
 #include "interactable.h"
+#include "room.h"
 
 #include <math.h>
 Matrix4 start;
@@ -17,10 +18,9 @@ void player_think(Entity *ent);
 
 Entity * player_spawn(Vector3D position)
 {
-    Entity *ent = gf3d_entity_create("dino");
+    Entity *ent = gf3d_entity_create("misc");
 
     ent->update = player_update;
-    slog("%f, %f, %f", ent->modelMat[3][0],ent->modelMat[3][1], ent->modelMat[3][2]);
 
     ent->camera_mode = 0;
 
@@ -93,10 +93,8 @@ void player_camera_fps(Entity* ent)
 
     if(ent->camera_mode == 1)
     {
-        gf3d_camera_set_position(vector3d(1, 10, 1));
-        gf3d_camera_set_rotation(vector3d(3.14, 0, 3.14));
-
         ent->camera_mode = 0;
+        room_camera_enable();
         return;
     }
 
