@@ -25,6 +25,7 @@ int main(int argc,char *argv[])
     const Uint8 * keys;
     Uint32 bufferFrame = 0;
     VkCommandBuffer commandBuffer;
+    Entity *ent;
 
     for (a = 1; a < argc;a++)
     {
@@ -53,8 +54,8 @@ int main(int argc,char *argv[])
 
     player_spawn(vector3d(1, 1, 1));
 
-    gf3d_entity_create_interactable("cube", 1, "test interact");
-
+    ent = gf3d_entity_create_interactable("cube", 1, "test interact");
+    gf3d_entity_set_bounding_box(ent, vector3d(-1, -1, 0), vector3d(1, 1, 0));
 
     // main game loop
     slog("gf3d main loop begin");
@@ -64,7 +65,7 @@ int main(int argc,char *argv[])
     gf3d_camera_set_position(vector3d(1, 10, 1));
     gf3d_camera_set_rotation(vector3d(3.14, 0, 3.14));
 
-    room_set_camera(vector3d(1, 10, 1),vector3d(3.14, 0, 3.14));
+    room_set_camera(vector3d(1, 10, 1),vector3d(3.3, 0, 3.14));
 
 
     while(!done)
@@ -73,7 +74,7 @@ int main(int argc,char *argv[])
         keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
         //update game things here
 
-
+        gf3d_entity_think_all();
         gf3d_entity_update_all();
 
         // configure render command for graphics command pool
@@ -89,11 +90,11 @@ int main(int argc,char *argv[])
 
                 room_draw(commandBuffer, bufferFrame);
                 gf3d_entity_draw_all(commandBuffer, bufferFrame);
-
             gf3d_command_rendering_end(commandBuffer);
 
         gf3d_vgraphics_render_end(bufferFrame);
 
+        gf3d_entity_overlap_all();
 
         if (keys[SDL_SCANCODE_ESCAPE])done = 1; // exit condition
     }

@@ -127,6 +127,23 @@ void gf3d_entity_update_all()
     }
 }
 
+
+void gf3d_entity_think(Entity *ent)
+{
+    if (!ent)return;
+    if (ent->think)ent->think(ent);
+}
+
+void gf3d_entity_think_all()
+{
+    for(int i = 0; i < gf3d_entity_manager.entity_max; i++)
+    {
+        if(!gf3d_entity_manager.entity_list[i]._inuse) continue;
+        gf3d_entity_think(&gf3d_entity_manager.entity_list[i]);
+    }
+}
+
+
 Entity* gf3d_entity_create(char* modelName)
 {
     Entity *ent = gf3d_entity_new();
@@ -157,5 +174,32 @@ Entity* gf3d_entity_create_interactable(char* modelName, InteractType type, char
 
 }
 
+void gf3d_entity_set_bounding_box(Entity* ent, Vector3D minExtent,Vector3D maxExtent)
+{
+    ent->boundingBox = (BoundingBox*)gfc_allocate_array(sizeof(BoundingBox),1);
+    vector3d_copy(ent->boundingBox->minExtent, minExtent);
+    vector3d_copy(ent->boundingBox->maxExtent, maxExtent);
+    vector3d_add(ent->boundingBox->minExtentPos,ent->boundingBox->minExtent,ent->position);
+    vector3d_add(ent->boundingBox->minExtentPos,ent->boundingBox->maxExtent,ent->position);
+}
+
+void gf3d_entity_overlap_all()
+{
+    int i, j;
+    for(int i = 0; i < gf3d_entity_manager.entity_max; i++)
+    {
+        if(!gf3d_entity_manager.entity_list[i]._inuse) continue;
+        if(gf3d_entity_manager.entity_list[i].boundingBox == NULL) continue;
+
+        for(int j = 1; j < gf3d_entity_manager.entity_max; j++)
+        {
+            if(i == j) continue;
+            if(!gf3d_entity_manager.entity_list[j]._inuse) continue;
+            if(gf3d_entity_manager.entity_list[j].boundingBox == NULL) continue;
+
+            bounding_box_overlap(gf3d_entity_manager.entity_list[i].boundingBox, gf3d_entity_manager.entity_list[j].boundingBox);
+        }
+    }
+}
 
 /*eol@eof*/

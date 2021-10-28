@@ -21,6 +21,7 @@ Entity * player_spawn(Vector3D position)
     Entity *ent = gf3d_entity_create("misc");
 
     ent->update = player_update;
+    ent->think = player_think;
 
     ent->camera_mode = 0;
 
@@ -29,12 +30,16 @@ Entity * player_spawn(Vector3D position)
     inventory_load_item("test item");
     inventory_load_item("pistol");
 
+    gf3d_entity_set_bounding_box(ent, vector3d(-1, -1, 0), vector3d(1, 1, 0));
+
+    slog("Bounding box for player: %f to %f", ent->boundingBox->minExtent.x, ent->boundingBox->maxExtent.x);
+
     vector3d_dup(ent->position);
 
     return ent;
 }
 
-void player_update(Entity *ent)
+void player_think(Entity *ent)
 {
     const Uint8 * keys;
     keys = SDL_GetKeyboardState(NULL);
@@ -46,12 +51,14 @@ void player_update(Entity *ent)
                 //gfc_matrix_translate(ent->modelMat, (vector3d(ent->modelMat[0][1] * 0.075, ent->modelMat[0][0] * -0.075, 0)));    ent->position = vector3d(ent->modelMat[3][0],ent->modelMat[3][1], ent->modelMat[3][2]);
                 ent->position.x += 0.1 * (sin(ent->rotation.z));
                 ent->position.y -= 0.1 * (cos(ent->rotation.z));
-                    //slog("%f, %f, %f", ent->position.x,ent->position.y, ent->position.z);
+                bounding_box_update(ent->boundingBox, ent->position);
+                //slog("%f, %f, %f", ent->boundingBox->minExtentPos.x, ent->boundingBox->minExtentPos.y, ent->boundingBox->minExtentPos.z);
             }
             if(keys[SDL_SCANCODE_S])
             {
                 ent->position.x -= 0.1 * (sin(ent->rotation.z));
                 ent->position.y += 0.1 * (cos(ent->rotation.z));
+                bounding_box_update(ent->boundingBox, ent->position);
             }
         }
         if(keys[SDL_SCANCODE_A])
@@ -86,6 +93,11 @@ void player_update(Entity *ent)
         }
         else
             input_timer += 1;
+}
+
+void player_update(Entity* ent)
+{
+
 }
 
 void player_camera_fps(Entity* ent)

@@ -3,6 +3,7 @@
 
 #include "gf3d_model.h"
 #include "interactable.h"
+#include "bounding_box.h"
 
 typedef enum
 {
@@ -25,6 +26,7 @@ typedef struct Entity_S
     void (*update)(struct Entity_S* self);   /**<function called on entity update*/
     void (*touch) (struct Entity_S* self,struct Entity_S* other);   /**<function called on entity think*/
     Interactable*   interactable;
+    BoundingBox* boundingBox;
     float           health;
     float           healthmax;
     int camera_mode;
@@ -54,12 +56,20 @@ void gf3d_entity_update(Entity *ent);
 
 void gf3d_entity_update_all();
 
+void gf3d_entity_think(Entity *ent);
+
+void gf3d_entity_think_all();
+
 void gf3d_entity_draw(Entity *ent, VkCommandBuffer commandBuffer, Uint32 bufferFrame);
 
 void gf3d_entity_draw_all(VkCommandBuffer commandBuffer, Uint32 bufferFrame);
 
 Entity* gf3d_entity_create(char* modelName);
 
+void gf3d_entity_set_bounding_box(Entity* ent, Vector3D minExtent, Vector3D maxExtent);
+
 Entity* gf3d_entity_create_interactable(char* modelName, InteractType type, char* name);
+
+void gf3d_entity_overlap_all();
 
 #endif
