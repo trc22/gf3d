@@ -197,7 +197,13 @@ void gf3d_entity_overlap_all()
             if(!gf3d_entity_manager.entity_list[j]._inuse) continue;
             if(gf3d_entity_manager.entity_list[j].boundingBox == NULL) continue;
 
-            bounding_box_overlap(gf3d_entity_manager.entity_list[i].boundingBox, gf3d_entity_manager.entity_list[j].boundingBox);
+            if(bounding_box_overlap(gf3d_entity_manager.entity_list[i].boundingBox, gf3d_entity_manager.entity_list[j].boundingBox))
+            {
+                    if (gf3d_entity_manager.entity_list[i].touch)
+                        gf3d_entity_manager.entity_list[i].touch(&gf3d_entity_manager.entity_list[i], &gf3d_entity_manager.entity_list[j]);
+                    if (gf3d_entity_manager.entity_list[j].touch)
+                        gf3d_entity_manager.entity_list[j].touch(&gf3d_entity_manager.entity_list[j], &gf3d_entity_manager.entity_list[i]);
+            }
         }
     }
 }

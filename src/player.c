@@ -15,6 +15,8 @@ int input_timer = 250;
 
 void player_update(Entity *ent);
 void player_think(Entity *ent);
+void player_touch(Entity* self, Entity* other);
+
 
 Entity * player_spawn(Vector3D position)
 {
@@ -22,6 +24,7 @@ Entity * player_spawn(Vector3D position)
 
     ent->update = player_update;
     ent->think = player_think;
+    ent->touch = player_touch;
 
     ent->camera_mode = 0;
 
@@ -83,6 +86,7 @@ void player_think(Entity *ent)
                 ent->rotation.z -= 0.0075;
         }
 
+
         if(input_timer == 250)
         {   if(keys[SDL_SCANCODE_LSHIFT])
             {
@@ -90,9 +94,19 @@ void player_think(Entity *ent)
 
                 input_timer = 0;
             }
+            if(keys[SDL_SCANCODE_E])
+            {
+                if(ent->interactable)
+                {
+                    slog("Interacting");
+                    ent->interactable = NULL;
+                }
+            }
+
         }
         else
             input_timer += 1;
+
 }
 
 void player_update(Entity* ent)
@@ -114,4 +128,14 @@ void player_camera_fps(Entity* ent)
     gf3d_camera_set_rotation(vector3d(3.14, 0, 3.14 + ent->rotation.z));
 
     ent->camera_mode = 1;
+}
+
+void player_touch(Entity* self, Entity* other)
+{
+    if(!self || !other)
+        return;
+    if(other->interactable)
+        self->interactable = other->interactable;
+    else
+        self->interactable = NULL;
 }

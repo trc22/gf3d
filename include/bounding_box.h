@@ -15,7 +15,7 @@ typedef struct BoundingBox_S
     void *data;
 }BoundingBox;
 
-void bounding_box_overlap(BoundingBox* one, BoundingBox* two);
+int bounding_box_overlap(BoundingBox* one, BoundingBox* two);
 
 void bounding_box_update(BoundingBox *box, Vector3D position);
 
