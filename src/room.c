@@ -1,4 +1,6 @@
 #include "simple_logger.h"
+#include "gf3d_entity.h"
+#include "player.h"
 #include "room.h"
 
 Room *room;
@@ -55,4 +57,14 @@ void room_camera_enable()
 {
     gf3d_camera_set_position(room->currentCamera->position);
     gf3d_camera_set_rotation(room->currentCamera->rotation);
+}
+
+void room_change(char* room_name)
+{
+    room_free();
+    gf3d_entity_free_all();
+    room_load(room_name);
+    room->mat[3][2] = -5;
+    player_spawn(vector3d(0, 0, 0));
+    room_set_camera(vector3d(1, 10, 1),vector3d(3.3, 0, 3.14));
 }

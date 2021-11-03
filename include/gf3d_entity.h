@@ -52,6 +52,8 @@ Entity *gf3d_entity_new();
  */
 void gf3d_entity_free(Entity *self);
 
+void gf3d_entity_free_all();
+
 void gf3d_entity_update(Entity *ent);
 
 void gf3d_entity_update_all();

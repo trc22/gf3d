@@ -4,6 +4,9 @@
 #include "simple_logger.h"
 
 #include "interactable.h"
+#include "room.h"
+
+void use_door(Interactable *door);
 
 typedef struct
 {
@@ -68,15 +71,27 @@ void interactable_free_all()
 
 void interactable_interact(Interactable *interact)
 {
+    if(!interact) return;
+    if(interact->_inuse == 0) return;
     switch(interact->type)
     {
         case IT_Inspect:
+            slog("It's a: %s", interact->name);
             break;
         case IT_Door:
+            slog("Switching rooms.");
+            use_door(interact);
             break;
         case IT_Pickup:
+            slog("Picking up item");
+            interactable_free(interact);
             break;
         case IT_Button:
+            slog("You pulled a lever.");
+            interactable_free(interact);
+            break;
+        case IT_Box:
+            slog("Opening item box.");
             break;
     }
 }
@@ -90,4 +105,9 @@ void interactable_close()
     memset(&interactable_manager,0,sizeof(Interactable_manager));
 }
 
+void use_door(Interactable* door)
+{
+    interactable_free_all();
+    room_change(door->dest);
+}
 

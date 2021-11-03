@@ -98,7 +98,7 @@ void player_think(Entity *ent)
             {
                 if(ent->interactable)
                 {
-                    slog("Interacting");
+                    interactable_interact(ent->interactable);
                     ent->interactable = NULL;
                 }
             }

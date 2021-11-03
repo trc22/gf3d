@@ -168,6 +168,7 @@ Entity* gf3d_entity_create_interactable(char* modelName, InteractType type, char
     }
     ent->interactable = interactable_new();
     ent->interactable->name = name;
+    ent->interactable->type = type;
 
     slog("Interactable name: %s", ent->interactable->name);
     return ent;
@@ -205,6 +206,14 @@ void gf3d_entity_overlap_all()
                         gf3d_entity_manager.entity_list[j].touch(&gf3d_entity_manager.entity_list[j], &gf3d_entity_manager.entity_list[i]);
             }
         }
+    }
+}
+
+void gf3d_entity_free_all()
+{
+    for(int i = 0; i < gf3d_entity_manager.entity_max; i++)
+    {
+        gf3d_entity_manager.entity_list[i]._inuse = 0;
     }
 }
 

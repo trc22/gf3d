@@ -32,4 +32,6 @@ void room_set_camera(Vector3D pos, Vector3D rot);
 
 void room_camera_enable();
 
+void room_change(char* room_name);
+
 #endif

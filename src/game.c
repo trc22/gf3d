@@ -54,7 +54,8 @@ int main(int argc,char *argv[])
 
     player_spawn(vector3d(1, 1, 1));
 
-    ent = gf3d_entity_create_interactable("cube", 1, "test interact");
+    ent = gf3d_entity_create_interactable("cube", 3, "test interact");
+    ent->interactable->dest = "door";
     gf3d_entity_set_bounding_box(ent, vector3d(-1, -1, 0), vector3d(1, 1, 0));
 
     // main game loop
