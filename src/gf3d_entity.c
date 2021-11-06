@@ -103,7 +103,7 @@ void gf3d_entity_update(Entity *ent)
 
 
     gfc_matrix_identity(ent->modelMat);
-    gfc_matrix_scale(ent->modelMat, ent->scale, ent->modelMat);
+    gfc_matrix_scale(ent->modelMat, ent->scale);
 
     gfc_matrix_rotate(ent->modelMat, ent->modelMat, ent->rotation.z, vector3d(0, 0, 1));
     gfc_matrix_rotate(ent->modelMat, ent->modelMat, ent->rotation.y, vector3d(0, 1, 0));
@@ -175,13 +175,20 @@ Entity* gf3d_entity_create_interactable(char* modelName, InteractType type, char
 
 }
 
-void gf3d_entity_set_bounding_box(Entity* ent, Vector3D minExtent,Vector3D maxExtent)
+void gf3d_entity_set_bounding_box(Entity* ent, int x, int y, int h, int w)
 {
     ent->boundingBox = (BoundingBox*)gfc_allocate_array(sizeof(BoundingBox),1);
+    ent->boundingBox->x = x;
+    ent->boundingBox->y = y;
+    ent->boundingBox->h = h;
+    ent->boundingBox->w = w;
+
+
+    /*ent->boundingBox = (BoundingBox*)gfc_allocate_array(sizeof(BoundingBox),1);
     vector3d_copy(ent->boundingBox->minExtent, minExtent);
     vector3d_copy(ent->boundingBox->maxExtent, maxExtent);
     vector3d_add(ent->boundingBox->minExtentPos,ent->boundingBox->minExtent,ent->position);
-    vector3d_add(ent->boundingBox->minExtentPos,ent->boundingBox->maxExtent,ent->position);
+    vector3d_add(ent->boundingBox->minExtentPos,ent->boundingBox->maxExtent,ent->position);*/
 }
 
 void gf3d_entity_overlap_all()
@@ -198,7 +205,7 @@ void gf3d_entity_overlap_all()
             if(!gf3d_entity_manager.entity_list[j]._inuse) continue;
             if(gf3d_entity_manager.entity_list[j].boundingBox == NULL) continue;
 
-            if(bounding_box_overlap(gf3d_entity_manager.entity_list[i].boundingBox, gf3d_entity_manager.entity_list[j].boundingBox))
+            if(bounding_box_overlap(gf3d_entity_manager.entity_list[i].boundingBox, gf3d_entity_manager.entity_list[j].boundingBox, gf3d_entity_manager.entity_list[i].position, gf3d_entity_manager.entity_list[j].position))
             {
                     if (gf3d_entity_manager.entity_list[i].touch)
                         gf3d_entity_manager.entity_list[i].touch(&gf3d_entity_manager.entity_list[i], &gf3d_entity_manager.entity_list[j]);

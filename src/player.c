@@ -33,9 +33,9 @@ Entity * player_spawn(Vector3D position)
     inventory_load_item("test item");
     inventory_load_item("pistol");
 
-    gf3d_entity_set_bounding_box(ent, vector3d(-1, -1, 0), vector3d(1, 1, 0));
+    gf3d_entity_set_bounding_box(ent, 1, 1, 1, 1);
 
-    slog("Bounding box for player: %f to %f", ent->boundingBox->minExtent.x, ent->boundingBox->maxExtent.x);
+    //slog("Bounding box for player: %f to %f", ent->boundingBox->minExtent.x, ent->boundingBox->maxExtent.x);
 
     vector3d_dup(ent->position);
 
@@ -96,6 +96,7 @@ void player_think(Entity *ent)
             }
             if(keys[SDL_SCANCODE_E])
             {
+                slog("Player y pos: %f", ent->position.y);
                 if(ent->interactable)
                 {
                     interactable_interact(ent->interactable);
@@ -134,6 +135,7 @@ void player_touch(Entity* self, Entity* other)
 {
     if(!self || !other)
         return;
+    slog("Overlap");
     if(other->interactable)
         self->interactable = other->interactable;
     else

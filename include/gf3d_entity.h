@@ -68,7 +68,7 @@ void gf3d_entity_draw_all(VkCommandBuffer commandBuffer, Uint32 bufferFrame);
 
 Entity* gf3d_entity_create(char* modelName);
 
-void gf3d_entity_set_bounding_box(Entity* ent, Vector3D minExtent, Vector3D maxExtent);
+void gf3d_entity_set_bounding_box(Entity* ent, int x, int y, int h, int w);
 
 Entity* gf3d_entity_create_interactable(char* modelName, InteractType type, char* name);
 

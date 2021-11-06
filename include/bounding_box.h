@@ -6,16 +6,15 @@
 
 typedef struct BoundingBox_S
 {
-    Vector3D minExtent;
-    Vector3D maxExtent;
-
-    Vector3D minExtentPos;
-    Vector3D maxExtentPos;
+    int x;
+    int y;
+    int w;
+    int h;
 
     void *data;
 }BoundingBox;
 
-int bounding_box_overlap(BoundingBox* one, BoundingBox* two);
+int bounding_box_overlap(BoundingBox* A, BoundingBox* B, Vector3D posA, Vector3D posB);
 
 void bounding_box_update(BoundingBox *box, Vector3D position);
 

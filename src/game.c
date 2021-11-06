@@ -25,7 +25,7 @@ int main(int argc,char *argv[])
     const Uint8 * keys;
     Uint32 bufferFrame = 0;
     VkCommandBuffer commandBuffer;
-    Entity *ent;
+    Entity *ent, *entOne;
 
     for (a = 1; a < argc;a++)
     {
@@ -52,11 +52,15 @@ int main(int argc,char *argv[])
 
     room_load("room");
 
+    ent = gf3d_entity_create_interactable("door", 3, "test interact");
+    //ent->interactable->dest = "door";
+    gf3d_entity_set_bounding_box(ent, 1,1,5,5);
+    vector3d_copy(ent->position, vector3d(10, 0, -2));
+    //bounding_box_update(ent->boundingBox, ent->position);
+
     player_spawn(vector3d(1, 1, 1));
 
-    ent = gf3d_entity_create_interactable("cube", 3, "test interact");
-    ent->interactable->dest = "door";
-    gf3d_entity_set_bounding_box(ent, vector3d(-1, -1, 0), vector3d(1, 1, 0));
+    //entOne = gf3d_entity_create_interactable("cube", 3, "test interact");
 
     // main game loop
     slog("gf3d main loop begin");
