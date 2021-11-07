@@ -19,6 +19,8 @@ typedef struct Item_S
     char * name;
     ItemType type;
 
+    int quantity;
+
     void *data;
 }Item;
 

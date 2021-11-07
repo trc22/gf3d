@@ -1,1 +1,1 @@
-{"items":["test item","pistol"]}
+{"test item":{"name":"test item","quantity":"0"},"pistol":{"name":"pistol","quantity":"0"}}

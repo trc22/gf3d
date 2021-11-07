@@ -101,6 +101,7 @@ Item* inventory_item_create(int id, const char* name, ItemType type)
     item->id = id;
     item->name = strdup(name);
     item->type = type;
+    item->quantity = 0;
 
     slog("Item %s loaded successfully", item->name);
 
@@ -155,10 +156,9 @@ Item* inventory_load_item(char* item_name)
 
 void inventory_item_box()
 {
-    SJson* json, *itemArary, *itemName;
+    SJson* json, *item, *item_name, *item_quantity;
 
     json = sj_object_new();
-    itemArary = sj_array_new();
 
     for(int i = 0; i < inventory.item_max; i++)
     {
@@ -169,13 +169,20 @@ void inventory_item_box()
             continue;
 
         slog("inserting: %s into box", inventory.item_list[i].name);
-        itemName = sj_new_str(inventory.item_list[i].name);
 
-        sj_array_append(itemArary, itemName);
+        item = sj_object_new();
+
+        item_name = sj_new_str(inventory.item_list[i].name);
+        item_quantity = sj_new_int(inventory.item_list[i].quantity);
+
+        sj_object_insert(item, "name", item_name);
+        sj_object_insert(item, "quantity", item_quantity);
+
+
+        sj_object_insert(json, inventory.item_list[i].name, item);
+
         inventory_free_item(&inventory.item_list[i]);
     }
-
-    sj_object_insert(json ,"items",itemArary);
     sj_save(json,"items/item_box.json");
     sj_free(json);
 
