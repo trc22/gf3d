@@ -33,6 +33,9 @@ void room_load(char* room_name)
 
     room->model = gf3d_model_load(room_name);
 
+    gfc_matrix_scale(room->mat, vector3d(5, 10, 5));
+    gfc_matrix_rotate(room->mat, room->mat, 0, vector3d(0, 0, 1));
+    room->mat[3][2] = -12;
 }
 
 void room_draw(VkCommandBuffer commandBuffer, Uint32 bufferFrame)

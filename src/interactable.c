@@ -2,11 +2,18 @@
 #include <string.h>
 
 #include "simple_logger.h"
+#include "simple_json.h"
+
+#include "room.h"
+#include "inventory.h"
 
 #include "interactable.h"
-#include "room.h"
 
 void use_door(Interactable *door);
+void use_inspect(Interactable *inspect);
+void use_pickup(Interactable *pickup);
+void use_button(Interactable *button);
+void use_box(Interactable *box);
 
 typedef struct
 {
@@ -84,14 +91,15 @@ void interactable_interact(Interactable *interact)
             break;
         case IT_Pickup:
             slog("Picking up item");
-            interactable_free(interact);
+            use_pickup(interact);
             break;
         case IT_Button:
-            slog("You pulled a lever.");
+            slog("You push a button.");
             interactable_free(interact);
             break;
         case IT_Box:
             slog("Opening item box.");
+            use_box(interact);
             break;
     }
 }
@@ -107,7 +115,69 @@ void interactable_close()
 
 void use_door(Interactable* door)
 {
+    if(!door) return;
+    if(door->dest == NULL) return;
+
+    if(door->locked)
+    {
+        slog("Door is locked");
+        return;
+    }
     interactable_free_all();
     room_change(door->dest);
 }
 
+void use_inspect(Interactable *inspect)
+{
+    if(!inspect) return;
+    if(inspect->inspectText == NULL) return;
+
+    slog("%s", inspect->inspectText);
+}
+
+void use_pickup(Interactable *pickup)
+{
+    if(!pickup) return;
+    if(pickup->itemName == NULL) return;
+
+    if(inventory_load_item(pickup->itemName) == NULL)
+    {
+        slog("Inventory is full!");
+        return;
+    }
+
+    slog("Item %s was picked up", pickup->itemName);
+
+    interactable_free(pickup);
+}
+
+void use_button(Interactable *button)
+{
+    int i;
+
+    if(!button) return;
+    if(button->dest == NULL) return;
+
+    slog("You press the button");
+
+    for (i = 0; i < interactable_manager.interact_max; i++)
+    {
+        if (interactable_manager.interactable_list[i]._inuse == 0)continue;
+
+        if (interactable_manager.interactable_list[i].name == button->dest)
+        {
+            interactable_manager.interactable_list[i].locked = 0;
+            slog("A door is now unlocked.");
+            interactable_free(button);
+            return;
+        }
+    }
+
+    slog("Nothing happened.");
+
+}
+void use_box(Interactable *box)
+{
+    inventory_item_box();
+    interactable_free(box);
+}

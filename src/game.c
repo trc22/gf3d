@@ -25,7 +25,7 @@ int main(int argc,char *argv[])
     const Uint8 * keys;
     Uint32 bufferFrame = 0;
     VkCommandBuffer commandBuffer;
-    Entity *ent, *entOne;
+    Entity *ent, *entOne, *entTwo;
 
     for (a = 1; a < argc;a++)
     {
@@ -53,9 +53,23 @@ int main(int argc,char *argv[])
     room_load("room");
 
     ent = gf3d_entity_create_interactable("door", 3, "test interact");
-    //ent->interactable->dest = "door";
-    gf3d_entity_set_bounding_box(ent, 1,1,5,5);
-    vector3d_copy(ent->position, vector3d(10, 0, -2));
+    ent->interactable->dest = "door";
+    gf3d_entity_set_bounding_box(ent, -2, 1, 10, 10);
+    vector3d_copy(ent->position, vector3d(10, -45, -12));
+    vector3d_copy(ent->scale, vector3d(2, 2, 2));
+
+    /*entOne = gf3d_entity_create_interactable("cube", 2, "test interact");
+    entOne->interactable->inspectText = "It's a cube.";
+    gf3d_entity_set_bounding_box(entOne, -2, 1, 1, 1);
+    vector3d_copy(entOne->position, vector3d(-10, -25, -10));*/
+
+    entTwo = gf3d_entity_create_interactable("cube", 4, "test interact");
+    entTwo->interactable->itemName = "pistol";
+    gf3d_entity_set_bounding_box(entTwo, -2, 1, 1, 1);
+    vector3d_copy(entTwo->position, vector3d(-10, -25, -10));
+
+
+
     //bounding_box_update(ent->boundingBox, ent->position);
 
     player_spawn(vector3d(1, 1, 1));

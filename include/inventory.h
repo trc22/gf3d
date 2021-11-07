@@ -66,7 +66,7 @@ void inventory_close();
  * @param type one of the item types specified in ItemType enumeration
  * @return item that was created
  */
-Item* inventory_item_create(int id, char* name, ItemType type);
+Item* inventory_item_create(int id, const char* name, ItemType type);
 
 /**
  * @brief loads an item from items/items.json and adds it to the inventory
@@ -74,6 +74,9 @@ Item* inventory_item_create(int id, char* name, ItemType type);
  * @return the item that was created
  */
 Item* inventory_load_item(char* item_name);
+
+void inventory_item_box();
+
 
 
 #endif
