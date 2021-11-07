@@ -187,5 +187,29 @@ void inventory_item_box()
     sj_free(json);
 
 
+}
+
+Item* inventory_get_item(int pos)
+{
+    if(inventory.item_list[pos]._inuse == 0) return NULL;
+
+    return &inventory.item_list[pos];
+}
+
+void inventory_display_()
+{
+    int i;
+    slog("Inventory:");
+    for(int i = 0; i < inventory.item_max; i++)
+    {
+        if(inventory.item_list[i]._inuse != 1)
+        {
+            slog("%i: Empty", (i + 1));
+            continue;
+        }
+
+        slog("%i: %s", (i + 1), inventory.item_list[i].name);
+    }
+    slog("Inventory end");
 
 }

@@ -79,6 +79,9 @@ Item* inventory_load_item(char* item_name);
 
 void inventory_item_box();
 
+Item* inventory_get_item(int pos);
+
+void inventory_display_();
 
 
 #endif
