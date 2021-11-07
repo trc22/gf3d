@@ -95,7 +95,7 @@ void interactable_interact(Interactable *interact)
             break;
         case IT_Button:
             slog("You push a button.");
-            interactable_free(interact);
+            use_button(interact);
             break;
         case IT_Box:
             slog("Opening item box.");
@@ -164,7 +164,7 @@ void use_button(Interactable *button)
     {
         if (interactable_manager.interactable_list[i]._inuse == 0)continue;
 
-        if (interactable_manager.interactable_list[i].name == button->dest)
+        if (strcmp(interactable_manager.interactable_list[i].name, button->dest) == 0)
         {
             interactable_manager.interactable_list[i].locked = 0;
             slog("A door is now unlocked.");
