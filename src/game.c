@@ -1,8 +1,10 @@
 #include <SDL.h>
 
+
 #include "simple_logger.h"
 #include "gfc_vector.h"
 #include "gfc_matrix.h"
+#include "gfc_audio.h"
 
 #include "gf3d_vgraphics.h"
 #include "gf3d_pipeline.h"
@@ -48,8 +50,13 @@ int main(int argc,char *argv[])
     );
 	slog_sync();
 
+	gfc_audio_init(6, 2, 1, 2, 1, 0);
+
     gf3d_entity_manager_init(10);
     interactable_init(5);
+
+
+    gfc_sound_play(gfc_sound_load("sounds/but_first_a_dance.wav", 0.5, 1), 4, 0.15, 1, 1);
 
     room_load("room");
 
