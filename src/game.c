@@ -82,7 +82,7 @@ int main(int argc,char *argv[])
     vector3d_copy(entThree->position, vector3d(10, -25, -10));
 
 
-    enemy_spawn(vector3d(-10, -45, 0));
+    enemy_spawn(vector3d(-10, -10, 0));
 
     //bounding_box_update(ent->boundingBox, ent->position);
 

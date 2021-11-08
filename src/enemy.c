@@ -48,6 +48,9 @@ void enemy_look_at_player(Entity* ent)
     vector3d_sub(x, player->position, ent->position);
     vector3d_normalize(&x);
 
-    ent->rotation.z = -x.x + 3.14;
+    if(ent->position.y > player->position.y)
+        ent->rotation.z = x.x;
+    else
+        ent->rotation.z = -x.x + 3.14;
 
 }
