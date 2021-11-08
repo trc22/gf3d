@@ -11,6 +11,8 @@ typedef struct Room_S
 
     Matrix4 mat;
 
+    Vector4D extents;
+
     char *name;
 
     Camera* currentCamera;
@@ -33,5 +35,7 @@ void room_set_camera(Vector3D pos, Vector3D rot);
 void room_camera_enable();
 
 void room_change(char* room_name);
+
+int room_check_bounds(Vector3D position);
 
 #endif

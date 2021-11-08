@@ -36,6 +36,8 @@ void room_load(char* room_name)
     gfc_matrix_scale(room->mat, vector3d(5, 10, 5));
     gfc_matrix_rotate(room->mat, room->mat, 0, vector3d(0, 0, 1));
     room->mat[3][2] = -12;
+
+    room->extents = vector4d(20, -20, 5, -45);
 }
 
 void room_draw(VkCommandBuffer commandBuffer, Uint32 bufferFrame)
@@ -70,4 +72,18 @@ void room_change(char* room_name)
     room->mat[3][2] = -5;
     player_spawn(vector3d(0, 0, 0));
     room_set_camera(vector3d(1, 10, 1),vector3d(3.3, 0, 3.14));
+}
+
+int room_check_bounds(Vector3D position)
+{
+    if(!room) return 0;
+
+    if(position.x >= room->extents.x) return 1;
+    if(position.x <= room->extents.y) return 1;
+    if(position.y >= room->extents.z) return 1;
+    if(position.y <= room->extents.w) return 1;
+
+    return 0;
+
+
 }

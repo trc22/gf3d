@@ -6,6 +6,7 @@
 
 #include "room.h"
 #include "inventory.h"
+#include "gf3d_entity.h"
 
 #include "interactable.h"
 
@@ -147,8 +148,7 @@ void use_pickup(Interactable *pickup)
     }
 
     slog("Item %s was picked up", pickup->itemName);
-
-    interactable_free(pickup);
+    gf3d_entity_get_by_id(pickup->parentEnt)->_inuse = 0;
 }
 
 void use_button(Interactable *button)

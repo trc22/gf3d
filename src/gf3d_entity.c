@@ -48,6 +48,7 @@ Entity *gf3d_entity_new()
         //. found a free entity
         memset(&gf3d_entity_manager.entity_list[i],0,sizeof(Entity));
         gf3d_entity_manager.entity_list[i]._inuse = 1;
+        gf3d_entity_manager.entity_list[i].id = i;
 
         gfc_matrix_identity(gf3d_entity_manager.entity_list[i].modelMat);
         gf3d_entity_manager.entity_list[i].scale = vector3d(1, 1, 1);
@@ -169,6 +170,7 @@ Entity* gf3d_entity_create_interactable(char* modelName, InteractType type, char
     ent->interactable = interactable_new();
     ent->interactable->name = name;
     ent->interactable->type = type;
+    ent->interactable->parentEnt = ent->id;
 
     slog("Interactable name: %s", ent->interactable->name);
     return ent;
@@ -233,6 +235,12 @@ void gf3d_entity_check_enemies_distance(Entity* ent)
         if(vector3d_distance_between_less_than(ent->position, gf3d_entity_manager.entity_list[i].position, 8))
             gf3d_entity_manager.entity_list[i]._inuse = 0;
     }
+}
+
+Entity* gf3d_entity_get_by_id(int id)
+{
+    if(gf3d_entity_manager.entity_list[id]._inuse != 1) return NULL;
+    return &gf3d_entity_manager.entity_list[id];
 }
 
 /*eol@eof*/

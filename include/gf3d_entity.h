@@ -22,6 +22,7 @@ typedef struct Entity_S
     Vector3D        rotation;       /**<yaw, pitch, and roll of the entity*/
     Vector3D        scale;          /**<*please default to 1,1,1*/
     int             isEnemy;
+    int             id;
     EntityState     state;          /**<current state of the entity*/
     void (*think) (struct Entity_S* self);   /**<function called on entity think*/
     void (*update)(struct Entity_S* self);   /**<function called on entity update*/
@@ -76,5 +77,7 @@ Entity* gf3d_entity_create_interactable(char* modelName, InteractType type, char
 void gf3d_entity_overlap_all();
 
 void gf3d_entity_check_enemies_distance(Entity* ent);
+
+Entity* gf3d_entity_get_by_id(int id);
 
 #endif

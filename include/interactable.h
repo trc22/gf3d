@@ -16,6 +16,8 @@ typedef struct Interactable_S
 {
     Uint32 _inuse;
 
+    int parentEnt;
+
     char* name;
     InteractType type;
 

@@ -66,22 +66,28 @@ void player_think(Entity *ent)
 
     keys = SDL_GetKeyboardState(NULL);
     mouse = SDL_GetMouseState(&x, &y);
+    Vector3D newPos = vector3d(0, 0, 0);
+
 
         if(ent->camera_mode == 0)
         {
             if(keys[SDL_SCANCODE_W])
             {
-                //gfc_matrix_translate(ent->modelMat, (vector3d(ent->modelMat[0][1] * 0.075, ent->modelMat[0][0] * -0.075, 0)));    ent->position = vector3d(ent->modelMat[3][0],ent->modelMat[3][1], ent->modelMat[3][2]);
+                newPos.x = ent->position.x + 0.1 * (sin(ent->rotation.z));
+                newPos.y = ent->position.y - 0.1 * (cos(ent->rotation.z));
+                if(room_check_bounds(newPos)) return;
+
                 ent->position.x += 0.1 * (sin(ent->rotation.z));
                 ent->position.y -= 0.1 * (cos(ent->rotation.z));
-                bounding_box_update(ent->boundingBox, ent->position);
-                //slog("%f, %f, %f", ent->boundingBox->minExtentPos.x, ent->boundingBox->minExtentPos.y, ent->boundingBox->minExtentPos.z);
             }
             if(keys[SDL_SCANCODE_S])
             {
+                newPos.x = ent->position.x - 0.1 * (sin(ent->rotation.z));
+                newPos.y = ent->position.y + 0.1 * (cos(ent->rotation.z));
+                if(room_check_bounds(newPos)) return;
+
                 ent->position.x -= 0.1 * (sin(ent->rotation.z));
                 ent->position.y += 0.1 * (cos(ent->rotation.z));
-                bounding_box_update(ent->boundingBox, ent->position);
             }
         }
         else if(input_timer == 250)

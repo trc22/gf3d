@@ -26,7 +26,7 @@ int main(int argc,char *argv[])
     const Uint8 * keys;
     Uint32 bufferFrame = 0;
     VkCommandBuffer commandBuffer;
-    Entity *ent, *entOne, *entTwo;
+    Entity *ent, *entOne, *entTwo, *entThree;
 
     for (a = 1; a < argc;a++)
     {
@@ -57,17 +57,23 @@ int main(int argc,char *argv[])
     ent->interactable->dest = "door";
     ent->interactable->locked = 1;
     gf3d_entity_set_bounding_box(ent, -2, 1, 10, 10);
-    vector3d_copy(ent->position, vector3d(10, -45, -12));
+    vector3d_copy(ent->position, vector3d(10, -50, -12));
     vector3d_copy(ent->scale, vector3d(2, 2, 2));
 
     entOne = gf3d_entity_create_interactable("cube", 1, "test button");
     entOne->interactable->dest = "test";
-    gf3d_entity_set_bounding_box(entOne, 1, 1, 1, 1);
+    gf3d_entity_set_bounding_box(entOne, 2, 2, 1, 1);
     vector3d_copy(entOne->position, vector3d(-0, -25, -10));
 
-    entTwo = gf3d_entity_create_interactable("cube", 4, "test box");
-    gf3d_entity_set_bounding_box(entTwo, -2, 1, 1, 1);
+    entTwo = gf3d_entity_create_interactable("cube", 0, "test pickup");
+    entTwo->interactable->itemName = "key";
+    gf3d_entity_set_bounding_box(entTwo, 2, 2, 1, 1);
     vector3d_copy(entTwo->position, vector3d(-10, -25, -10));
+
+    entThree = gf3d_entity_create_interactable("cube", 4, "test box");
+    gf3d_entity_set_bounding_box(entThree, 2, 2, 1, 1);
+    vector3d_copy(entThree->position, vector3d(10, -25, -10));
+
 
     enemy_spawn(vector3d(-10, -45, 0));
 
