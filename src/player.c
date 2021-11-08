@@ -215,17 +215,22 @@ void player_use_item(Entity* self, Item *item)
         case 0:
             break;
         case 1:
-            slog("Using pistol");
-            Item* ammo = inventory_get_item_by_id(5);
-            if(ammo == NULL)
+            if(item->quantity <= 0)
             {
-                slog("No ammo");
-                break;
+                Item* ammo = inventory_get_item_by_id(5);
+                if(ammo == NULL) break;
+                player_use_item(self, ammo);
+                if(item->quantity <= 0)
+                {
+                    slog("No ammo");
+                    break;
+                }
+
             }
-            ammo->quantity--;
-            slog("Pistol fired, %i bullets remaining", ammo->quantity);
-            if(ammo->quantity <= 0)
-                inventory_free_item(ammo);
+
+            slog("Using pistol");
+            item->quantity--;
+            slog("Pistol fired, %i shots remaining", item->quantity);
             break;
         case 2:
             slog("Using knife");
@@ -250,6 +255,23 @@ void player_use_item(Entity* self, Item *item)
             }
             break;
         case 5:
+            if(item->quantity <= 0)
+                inventory_free_item(item);
+
+            Item* pistol = inventory_get_item_by_id(1);
+            if(pistol == NULL) break;
+            int temp = 12 - pistol->quantity;
+            pistol->quantity += item->quantity;
+            if(pistol->quantity > 12) pistol->quantity = 12;
+            item->quantity = item->quantity - temp;
+
+
+            slog("Reloaded: pistol has %i shots, ammo remaining is %i", pistol->quantity, item->quantity);
+
+            if(item->quantity <= 0)
+                inventory_free_item(item);
+
+            current_item = NULL;
             break;
     }
 }
