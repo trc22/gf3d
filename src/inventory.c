@@ -88,7 +88,7 @@ void inventory_close()
     memset(&inventory,0,sizeof(Inventory));
 }
 
-Item* inventory_item_create(int id, const char* name, ItemType type)
+Item* inventory_item_create(int id, const char* name, ItemType type, int quantity)
 {
     Item* item;
     item = inventory_item_new();
@@ -101,7 +101,7 @@ Item* inventory_item_create(int id, const char* name, ItemType type)
     item->id = id;
     item->name = strdup(name);
     item->type = type;
-    item->quantity = 0;
+    item->quantity = quantity;
 
     slog("Item %s loaded successfully", item->name);
 
@@ -111,12 +111,13 @@ Item* inventory_item_create(int id, const char* name, ItemType type)
 Item* inventory_load_item(char* item_name)
 {
     SJson* json, *sj_item;
-    SJson *sj_id, *sj_name, *sj_type;
+    SJson *sj_id, *sj_name, *sj_type, *sj_quantity;
 
     Item* item;
     int id;
     const char* name;
     int type;
+    int quantity;
 
     json = sj_load("items/items.json");
 
@@ -146,7 +147,11 @@ Item* inventory_load_item(char* item_name)
     sj_get_integer_value(sj_type, &type);
     slog("Item type: %i", type);
 
-    item = inventory_item_create(id, name, type);
+    sj_quantity = sj_object_get_value(sj_item, "quantity");
+    sj_get_integer_value(sj_quantity, &quantity);
+    slog("Item quantity: %i", quantity);
+
+    item = inventory_item_create(id, name, type, quantity);
 
     sj_free(json);
 
@@ -194,6 +199,18 @@ Item* inventory_get_item(int pos)
     if(inventory.item_list[pos]._inuse == 0) return NULL;
 
     return &inventory.item_list[pos];
+}
+
+Item* inventory_get_item_by_id(int id)
+{
+    for(int i = 0; i < inventory.item_max; i++)
+    {
+        if(inventory.item_list[i]._inuse != 1) continue;
+
+        if(inventory.item_list[i].id == id)
+            return &inventory.item_list[i];
+    }
+    return NULL;
 }
 
 void inventory_display_()

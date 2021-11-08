@@ -15,6 +15,7 @@
 #include "interactable.h"
 #include "player.h"
 #include "room.h"
+#include "enemy.h"
 
 
 int main(int argc,char *argv[])
@@ -68,11 +69,11 @@ int main(int argc,char *argv[])
     gf3d_entity_set_bounding_box(entTwo, -2, 1, 1, 1);
     vector3d_copy(entTwo->position, vector3d(-10, -25, -10));
 
-
+    enemy_spawn(vector3d(-10, -45, 0));
 
     //bounding_box_update(ent->boundingBox, ent->position);
 
-    player_spawn(vector3d(1, 1, 1));
+    enemy_set_player(player_spawn(vector3d(1, 1, 1)));
 
     //entOne = gf3d_entity_create_interactable("cube", 3, "test interact");
 

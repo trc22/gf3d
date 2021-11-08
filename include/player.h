@@ -12,7 +12,7 @@ void player_camera_fps(Entity *ent);
 
 void player_set_current_item(int pos);
 
-void player_use_item(Item *item);
+void player_use_item(Entity* self, Item *item);
 
 
 

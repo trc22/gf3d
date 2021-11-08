@@ -720,5 +720,11 @@ Matrix4 * gf3d_vgraphics_get_view_matrix()
 {
     return &gf3d_vgraphics.ubo.view;
 }
+
+void gf3d_vgraphics_get_proj_matrix(Matrix4 out)
+{
+    gfc_matrix_copy(out, gf3d_vgraphics.ubo.proj);
+
+}
 /*eol@eof*/
 

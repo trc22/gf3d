@@ -59,4 +59,6 @@ void gf3d_vgraphics_modify_camera(Matrix4 in);
 
 Matrix4* gf3d_vgraphics_get_view_matrix();
 
+void gf3d_vgraphics_get_proj_matrix(Matrix4 out);
+
 #endif

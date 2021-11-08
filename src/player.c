@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include "gfc_matrix.h"
 #include "simple_logger.h"
 #include "gf3d_vgraphics.h"
@@ -7,8 +9,7 @@
 #include "interactable.h"
 #include "room.h"
 
-#include <math.h>
-Matrix4 start;
+UniformBufferObject ubo;
 
 Item *current_item = NULL;
 
@@ -34,6 +35,12 @@ Entity * player_spawn(Vector3D position)
 
     inventory_load_item("test item");
     inventory_load_item("pistol");
+    inventory_load_item("key");
+    inventory_load_item("health pack");
+    inventory_load_item("ammo_pistol");
+    inventory_load_item("knife");
+
+
 
     gf3d_entity_set_bounding_box(ent, 1, 1, 5, 5);
 
@@ -51,8 +58,14 @@ Entity * player_spawn(Vector3D position)
 
 void player_think(Entity *ent)
 {
+    int x, y;
     const Uint8 * keys;
+    Uint32 mouse;
+
+    SDL_PumpEvents();
+
     keys = SDL_GetKeyboardState(NULL);
+    mouse = SDL_GetMouseState(&x, &y);
 
         if(ent->camera_mode == 0)
         {
@@ -69,6 +82,24 @@ void player_think(Entity *ent)
                 ent->position.x -= 0.1 * (sin(ent->rotation.z));
                 ent->position.y += 0.1 * (cos(ent->rotation.z));
                 bounding_box_update(ent->boundingBox, ent->position);
+            }
+        }
+        else if(input_timer == 250)
+        {
+            if ((mouse & SDL_BUTTON_LMASK) != 0)
+            {
+                /*Vector3D temp;
+                ubo = gf3d_vgraphics_get_uniform_buffer_object();
+
+                slog("Mouse cursor is at %i, %i", x, y);
+
+                vector3d_copy(temp,gfc_unproject(vector3d(x, y, 0), ubo.view, ubo.proj, vector4d(200, 300, 800, 600)));
+
+                slog("%f, %f, %f", temp.x, temp.y, temp.z);
+
+                */
+                player_use_item(ent, current_item);
+                input_timer = 0;
             }
         }
         if(keys[SDL_SCANCODE_A])
@@ -166,14 +197,53 @@ void player_set_current_item(int pos)
 
 }
 
-void player_use_item(Item *item)
+void player_use_item(Entity* self, Item *item)
 {
+    if(!self) return;
+    if(!item) return;
+    if(item == NULL) return;
+    if(item->_inuse != 1);
+
     switch(item->id)
     {
         case 0:
             break;
         case 1:
             slog("Using pistol");
+            Item* ammo = inventory_get_item_by_id(5);
+            if(ammo == NULL)
+            {
+                slog("No ammo");
+                break;
+            }
+            ammo->quantity--;
+            slog("Pistol fired, %i bullets remaining", ammo->quantity);
+            if(ammo->quantity <= 0)
+                inventory_free_item(ammo);
+            break;
+        case 2:
+            slog("Using knife");
+            gf3d_entity_check_enemies_distance(self);
+            break;
+        case 3:
+            slog("Using health kit");
+            self->health += 25;
+            if(self->health > self->healthmax)
+                self->health = self->healthmax;
+            slog("New health: %f", self->health);
+            inventory_free_item(item);
+            current_item = NULL;
+            break;
+        case 4:
+            slog("Using key");
+            if(self->interactable != NULL)
+            {
+                self->interactable->locked = 0;
+                inventory_free_item(item);
+                current_item = NULL;
+            }
+            break;
+        case 5:
             break;
     }
 }
