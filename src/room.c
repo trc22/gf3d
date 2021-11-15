@@ -1,4 +1,8 @@
+#include <stdlib.h>
+#include <string.h>
+#include "simple_json.h"
 #include "simple_logger.h"
+
 #include "gf3d_entity.h"
 #include "player.h"
 #include "room.h"
@@ -17,7 +21,16 @@ void room_new()
 
 void room_load(char* room_name)
 {
+    TextLine assetname;
+
+    SJson* json, *sj_room, *sj_model;
+    const char *model_name;
+
+    snprintf(assetname,GFCLINELEN,"rooms/%s.json",room_name);
+    slog("%s", assetname);
+
     room_new();
+
 
     if(!room)
     {
@@ -25,24 +38,42 @@ void room_load(char* room_name)
         return;
     }
 
-    room->name = room_name;
+    json = sj_load(assetname);
+
+    if(!json) return;
+
+    room->name = strdup(room_name);
+
+    sj_room = sj_object_get_value(json, room->name);
 
     slog("%s", room->name);
 
-    gfc_matrix_identity(room->mat);
+    gfc_matrix_identity(room->modelMat);
 
-    room->model = gf3d_model_load(room_name);
+    sj_model = sj_object_get_value(sj_room, "model");
+    model_name = sj_get_string_value(sj_model);
+    slog("%s", model_name);
+    room->model = gf3d_model_load(strdup(model_name));
 
+    vector3d_dup(room->position);
+
+    room->scale = vector3d(5, 10, 5);
+    room->rotation = vector3d(0, 0, 0);
+    room->position = vector3d(1, 1, -12);
+
+
+    sj_free(json);
+/*
     gfc_matrix_scale(room->mat, vector3d(5, 10, 5));
     gfc_matrix_rotate(room->mat, room->mat, 0, vector3d(0, 0, 1));
     room->mat[3][2] = -12;
 
-    room->extents = vector4d(20, -20, 5, -45);
+    room->extents = vector4d(20, -20, 5, -45);*/
 }
 
 void room_draw(VkCommandBuffer commandBuffer, Uint32 bufferFrame)
 {
-    gf3d_model_draw(room->model, bufferFrame, commandBuffer, room->mat);
+    gf3d_model_draw(room->model, bufferFrame, commandBuffer, room->modelMat);
 }
 
 void room_free()
@@ -69,9 +100,9 @@ void room_change(char* room_name)
     room_free();
     gf3d_entity_free_all();
     room_load(room_name);
-    room->mat[3][2] = -5;
+    /*room->mat[3][2] = -5;
     player_spawn(vector3d(0, 0, 0));
-    room_set_camera(vector3d(1, 10, 1),vector3d(3.3, 0, 3.14));
+    room_set_camera(vector3d(1, 10, 1),vector3d(3.3, 0, 3.14));*/
 }
 
 int room_check_bounds(Vector3D position)
@@ -84,6 +115,19 @@ int room_check_bounds(Vector3D position)
     if(position.y <= room->extents.w) return 1;
 
     return 0;
+}
 
+void room_update()
+{
+    if (!room)return;
+
+    gfc_matrix_identity(room->modelMat);
+    gfc_matrix_scale(room->modelMat, room->scale);
+
+    gfc_matrix_rotate(room->modelMat, room->modelMat, room->rotation.z, vector3d(0, 0, 1));
+    gfc_matrix_rotate(room->modelMat, room->modelMat, room->rotation.y, vector3d(0, 1, 0));
+    gfc_matrix_rotate(room->modelMat, room->modelMat, room->rotation.x, vector3d(1, 0, 0));
+
+    gfc_matrix_translate(room->modelMat, room->position);
 
 }

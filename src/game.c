@@ -56,9 +56,9 @@ int main(int argc,char *argv[])
     interactable_init(5);
 
 
-    gfc_sound_play(gfc_sound_load("sounds/but_first_a_dance.wav", 0.5, 1), 4, 0.15, 1, 1);
+    gfc_sound_play(gfc_sound_load("sounds/but_first_a_dance.mp3", 0.5, 1), 4, 0.5, 1, 1);
 
-    room_load("room");
+    room_load("test_room");
 
     ent = gf3d_entity_create_interactable("door", 3, "test door");
     ent->interactable->dest = "door";
@@ -113,9 +113,9 @@ int main(int argc,char *argv[])
         // configure render command for graphics command pool
         // for each mesh, get a command and configure it from the pool
 
-
-       gf3d_camera_update_view();
-       gf3d_camera_get_view(gf3d_vgraphics_get_view_matrix());
+        room_update();
+        gf3d_camera_update_view();
+        gf3d_camera_get_view(gf3d_vgraphics_get_view_matrix());
 
         bufferFrame = gf3d_vgraphics_render_begin();
         gf3d_pipeline_reset_frame(gf3d_vgraphics_get_graphics_pipeline(),bufferFrame);

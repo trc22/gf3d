@@ -1,0 +1,38 @@
+{   "test_room":
+    {
+        "name":"test room",
+        "id":"0",
+        "model": "room",
+        "scale": ["1, 1, 1"],
+        "boundaries":["20, -20, 5, -45"],
+        "entities":
+        {
+            "door":
+            {
+                "name": "test door",
+                "position": ["1", "1", "1"],
+                "model": "cube",
+                "interactable": "3",
+                "dest": "3",
+                "locked": "0"
+            },
+            "pickup":
+            {
+                "name": "test pickup",
+                "position": ["1", "1", "1"],
+                "model": "cube",
+                "interactable": "3",
+                "item": "key"
+            },
+            "enemy":
+            {
+                "name": "test enemy",
+                "position": ["1", "1", "1"],
+                "model": "misc",
+                "interactable": "-1",
+                "isEnemy": "0",
+                "item": "key"
+            }
+        }
+    }
+}

@@ -9,7 +9,11 @@ typedef struct Room_S
 {
     Model *model;
 
-    Matrix4 mat;
+    Matrix4 modelMat;
+
+    Vector3D position;
+    Vector3D rotation;
+    Vector3D scale;
 
     Vector4D extents;
 
@@ -37,5 +41,7 @@ void room_camera_enable();
 void room_change(char* room_name);
 
 int room_check_bounds(Vector3D position);
+
+void room_update();
 
 #endif

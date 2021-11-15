@@ -1,6 +1,8 @@
 #include "gfc_matrix.h"
 
 #include "enemy.h"
+#include "room.h"
+
 
 void enemy_update(Entity *ent);
 void enemy_think(Entity *ent);
@@ -34,6 +36,13 @@ void enemy_think(Entity *ent)
     if(player == NULL) return;
 
     enemy_look_at_player(ent);
+    if(!vector3d_distance_between_less_than(ent->position, player->position, 8))
+    {
+        ent->position.x += 0.01 * (sin(ent->rotation.z));
+        ent->position.y -= 0.01 * (cos(ent->rotation.z));
+
+    }
+
 }
 
 void enemy_set_player(Entity* ent)
@@ -51,6 +60,6 @@ void enemy_look_at_player(Entity* ent)
     if(ent->position.y > player->position.y)
         ent->rotation.z = x.x;
     else
-        ent->rotation.z = -x.x + 3.14;
+        ent->rotation.z = -x.x - 3.14;
 
 }
