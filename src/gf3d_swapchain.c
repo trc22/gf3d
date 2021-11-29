@@ -143,7 +143,7 @@ void gf3d_swapchain_create(VkDevice device,VkSurfaceKHR surface)
     
     slog("minimum images needed for swap chain: %i",gf3d_swapchain.capabilities.minImageCount);
     slog("Maximum images needed for swap chain: %i",gf3d_swapchain.capabilities.maxImageCount);
-    gf3d_swapchain.swapChainCount = gf3d_swapchain.capabilities.minImageCount + 1;
+    gf3d_swapchain.swapChainCount = gf3d_swapchain.capabilities.minImageCount + 2;
     if (gf3d_swapchain.capabilities.maxImageCount)gf3d_swapchain.swapChainCount = MIN(gf3d_swapchain.swapChainCount,gf3d_swapchain.capabilities.maxImageCount);
     slog("using %i images for the swap chain",gf3d_swapchain.swapChainCount);
     

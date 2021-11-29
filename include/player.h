@@ -1,14 +1,22 @@
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
 
-#include "entity.h"
+#include "gf3d_entity.h"
+#include "gfc_matrix.h"
 
-/**
- * @brief Create a new player entity
- * @param position where to spawn the aguman at
- * @return NULL on error, or an player entity pointer on success
- */
-Entity *player_new(Vector3D position);
+#include "inventory.h"
+
+Entity * player_spawn(Vector3D position);
+
+void player_camera_fps(Entity *ent);
+
+void player_set_current_item(int pos);
+
+void player_use_item(Entity* self, Item *item);
+
+
+
+
 
 
 #endif

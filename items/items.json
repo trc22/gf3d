@@ -1,0 +1,43 @@
+{   "test item":
+    {
+        "name":"test item",
+        "id":"0",
+        "type":"1",
+        "quantity":"1"
+    },
+    "pistol":
+    {
+        "name":"pistol",
+        "id":"1",
+        "type":"0",
+        "quantity":"12"
+    },
+    "knife":
+    {
+        "name":"knife",
+        "id":"2",
+        "type":"0",
+        "quantity":"1"
+    },
+    "health pack":
+    {
+        "name":"health pack",
+        "id":"3",
+        "type":"3",
+        "quantity":"1"
+    },
+    "key":
+    {
+        "name":"key",
+        "id":"4",
+        "type":"1",
+        "quantity":"1"
+    },
+    "ammo_pistol":
+    {
+        "name":"pistol ammo",
+        "id":"5",
+        "type":"1",
+        "quantity":"12"
+    }
+}
