@@ -56,19 +56,19 @@ int main(int argc,char *argv[])
     mouse = gf3d_sprite_load("images/cursor.png",128,128, 1);
 
     gf3d_entity_manager_init(10);
-    interactable_init(5);
+    interactable_init(8);
 
 
     gfc_sound_play(gfc_sound_load("sounds/but_first_a_dance.mp3", 0.5, 1), 4, 0.5, 1, 1);
 
     room_load("test_room");
 
-    ent = gf3d_entity_create_interactable("door", 3, "test door");
+    /*ent = gf3d_entity_create_interactable("door", 3, "test door");
     ent->interactable->dest = "door";
     ent->interactable->locked = 1;
     gf3d_entity_set_bounding_box(ent, -2, 1, 10, 10);
     vector3d_copy(ent->position, vector3d(10, -50, -12));
-    vector3d_copy(ent->scale, vector3d(2, 2, 2));
+    vector3d_copy(ent->scale, vector3d(2, 2, 2));*/
 
     entOne = gf3d_entity_create_interactable("cube", 1, "test button");
     entOne->interactable->dest = "test";

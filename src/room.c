@@ -23,7 +23,7 @@ void room_load(char* room_name)
 {
     TextLine assetname;
 
-    SJson* json, *sj_room, *sj_model;
+    SJson* json, *sj_room, *sj_model, *sj_temp, *sj_extents, *sj_position, *sj_scale;
     const char *model_name;
 
     snprintf(assetname,GFCLINELEN,"rooms/%s.json",room_name);
@@ -50,25 +50,112 @@ void room_load(char* room_name)
 
     gfc_matrix_identity(room->modelMat);
 
+    //Load room model
     sj_model = sj_object_get_value(sj_room, "model");
     model_name = sj_get_string_value(sj_model);
     slog("%s", model_name);
     room->model = gf3d_model_load(strdup(model_name));
 
+    //Set room boundaries
+    sj_extents = sj_object_get_value(sj_room, "boundaries");
+    sj_temp = sj_array_get_nth(sj_extents, 0);
+    sj_get_float_value(sj_temp, &room->extents.x);
+    slog("%f", room->extents.x);
+    sj_temp = sj_array_get_nth(sj_extents, 1);
+    sj_get_float_value(sj_temp, &room->extents.y);
+    slog("%f", room->extents.y);
+    sj_temp = sj_array_get_nth(sj_extents, 2);
+    sj_get_float_value(sj_temp, &room->extents.z);
+    slog("%f", room->extents.z);
+    sj_temp = sj_array_get_nth(sj_extents, 3);
+    sj_get_float_value(sj_temp, &room->extents.w);
+    slog("%f", room->extents.w);
+
+
     vector3d_dup(room->position);
 
-    room->scale = vector3d(5, 10, 5);
-    room->rotation = vector3d(0, 0, 0);
-    room->position = vector3d(1, 1, -12);
+    sj_scale = sj_object_get_value(sj_room, "scale");
 
+    sj_temp = sj_array_get_nth(sj_scale, 0);
+    sj_get_float_value(sj_temp, &room->scale.x);
+
+    sj_temp = sj_array_get_nth(sj_scale, 1);
+    sj_get_float_value(sj_temp, &room->scale.y);
+
+    sj_temp = sj_array_get_nth(sj_scale, 2);
+    sj_get_float_value(sj_temp, &room->scale.z);
+
+
+    sj_position = sj_object_get_value(sj_room, "position");
+
+    sj_temp = sj_array_get_nth(sj_position, 0);
+    sj_get_float_value(sj_temp, &room->position.x);
+
+    sj_temp = sj_array_get_nth(sj_position, 1);
+    sj_get_float_value(sj_temp, &room->position.y);
+
+    sj_temp = sj_array_get_nth(sj_position, 2);
+    sj_get_float_value(sj_temp, &room->position.z);
+
+
+    room->rotation = vector3d(0, 0, 0);
+
+    room_load_entities(sj_room);
 
     sj_free(json);
-/*
-    gfc_matrix_scale(room->mat, vector3d(5, 10, 5));
-    gfc_matrix_rotate(room->mat, room->mat, 0, vector3d(0, 0, 1));
-    room->mat[3][2] = -12;
 
-    room->extents = vector4d(20, -20, 5, -45);*/
+}
+
+void room_load_entities(SJson *sj_room)
+{
+    SJson* sj_temp, *sj_entities, *sj_doors, *sj_door;
+    SJson* sj_ent_pos;
+
+    Entity* ent;
+
+    int count, i;
+
+    char num;
+
+    Vector3D ent_pos = vector3d(0, 0, 0);
+
+
+    if(!sj_room) return;
+
+    slog("Loading entities!");
+
+    sj_entities = sj_object_get_value(sj_room, "entities");
+    sj_doors = sj_object_get_value(sj_entities, "doors");
+    sj_temp = sj_object_get_value(sj_doors, "count");
+    sj_get_integer_value(sj_temp, &count);
+
+    slog("door count: %i", count);
+    for(i = 0; i < count; i++)
+    {
+        num = i + '0';
+        sj_door = sj_object_get_value(sj_doors,&num);
+
+        sj_ent_pos = sj_object_get_value(sj_door, "position");
+        sj_temp = sj_array_get_nth(sj_ent_pos, 0);
+
+        sj_get_float_value(sj_temp, &ent_pos.x);
+        slog("ent pos x: %f", ent_pos.x);
+
+        sj_temp = sj_array_get_nth(sj_ent_pos, 1);
+        sj_get_float_value(sj_temp, &ent_pos.y);
+        slog("ent pos y: %f", ent_pos.y);
+
+        sj_temp = sj_array_get_nth(sj_ent_pos, 2);
+        sj_get_float_value(sj_temp, &ent_pos.z);
+        slog("ent pos z: %f", ent_pos.z);
+
+        ent = gf3d_entity_create_interactable("door", 3, "test_door");
+        vector3d_copy(ent->position, ent_pos);
+        gf3d_entity_set_bounding_box(ent, -2, 1, 10, 10);
+        vector3d_copy(ent->scale, vector3d(2, 2, 2));
+
+    }
+
 }
 
 void room_draw()

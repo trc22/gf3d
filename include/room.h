@@ -2,6 +2,7 @@
 #define __ROOM_H__
 
 #include "gfc_matrix.h"
+#include "simple_json.h"
 #include "gf3d_model.h"
 #include "gf3d_camera.h"
 
@@ -29,6 +30,8 @@ void room_init();
 void room_new();
 
 void room_load(char* room_name);
+
+void room_load_entities(SJson *sj_room);
 
 void room_draw();
 
