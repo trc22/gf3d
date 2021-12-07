@@ -108,12 +108,13 @@ void room_load(char* room_name)
 
 void room_load_entities(SJson *sj_room)
 {
-    SJson* sj_temp, *sj_entities, *sj_doors, *sj_door;
-    SJson* sj_ent_pos;
+    SJson* sj_temp, *sj_entities, *sj_doors, *sj_door, *sj_pickups, *sj_pickup;
+    SJson* sj_ent_name, *sj_ent_pos, *sj_ent_dest;
 
     Entity* ent;
 
     int count, i;
+
 
     char num;
 
@@ -125,6 +126,7 @@ void room_load_entities(SJson *sj_room)
     slog("Loading entities!");
 
     sj_entities = sj_object_get_value(sj_room, "entities");
+
     sj_doors = sj_object_get_value(sj_entities, "doors");
     sj_temp = sj_object_get_value(sj_doors, "count");
     sj_get_integer_value(sj_temp, &count);
@@ -149,13 +151,62 @@ void room_load_entities(SJson *sj_room)
         sj_get_float_value(sj_temp, &ent_pos.z);
         slog("ent pos z: %f", ent_pos.z);
 
-        ent = gf3d_entity_create_interactable("door", 3, "test_door");
+        sj_ent_name = sj_object_get_value(sj_door, "name");
+
+        sj_ent_dest = sj_object_get_value(sj_door, "dest");
+
+        ent = gf3d_entity_create_interactable("door", 3, strdup(sj_get_string_value(sj_ent_name)));
+        slog("%s", ent->interactable->name);
+
+
         vector3d_copy(ent->position, ent_pos);
+
         gf3d_entity_set_bounding_box(ent, -2, 1, 10, 10);
+
         vector3d_copy(ent->scale, vector3d(2, 2, 2));
 
-    }
+        ent->interactable->dest = strdup(sj_get_string_value(sj_ent_dest));
+        slog("%s", ent->interactable->dest);
 
+    }
+    sj_pickups = sj_object_get_value(sj_entities, "pickups");
+    sj_temp = sj_object_get_value(sj_pickups, "count");
+    sj_get_integer_value(sj_temp, &count);
+
+    slog("pickup count: %i", count);
+    for(i = 0; i < count; i++)
+    {
+        num = i + '0';
+        sj_pickup = sj_object_get_value(sj_pickups,&num);
+
+        sj_ent_pos = sj_object_get_value(sj_pickup, "position");
+        sj_temp = sj_array_get_nth(sj_ent_pos, 0);
+
+        sj_get_float_value(sj_temp, &ent_pos.x);
+        slog("ent pos x: %f", ent_pos.x);
+
+        sj_temp = sj_array_get_nth(sj_ent_pos, 1);
+        sj_get_float_value(sj_temp, &ent_pos.y);
+        slog("ent pos y: %f", ent_pos.y);
+
+        sj_temp = sj_array_get_nth(sj_ent_pos, 2);
+        sj_get_float_value(sj_temp, &ent_pos.z);
+        slog("ent pos z: %f", ent_pos.z);
+
+        sj_ent_name = sj_object_get_value(sj_pickup, "name");
+
+        sj_ent_dest = sj_object_get_value(sj_pickup, "item");
+
+        ent = gf3d_entity_create_interactable("cube", 0, strdup(sj_get_string_value(sj_ent_name)));
+
+        //vector3d_copy(ent->scale, vector3d(2, 2, 2));
+        vector3d_copy(ent->position, ent_pos);
+
+        gf3d_entity_set_bounding_box(ent, 2, 2, 1, 1);
+
+        ent->interactable->itemName = strdup(sj_get_string_value(sj_ent_dest));
+
+    }
 }
 
 void room_draw()

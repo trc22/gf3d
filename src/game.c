@@ -75,10 +75,10 @@ int main(int argc,char *argv[])
     gf3d_entity_set_bounding_box(entOne, 2, 2, 1, 1);
     vector3d_copy(entOne->position, vector3d(-0, -25, -10));
 
-    entTwo = gf3d_entity_create_interactable("cube", 0, "test pickup");
+    /*entTwo = gf3d_entity_create_interactable("cube", 0, "test pickup");
     entTwo->interactable->itemName = "key";
     gf3d_entity_set_bounding_box(entTwo, 2, 2, 1, 1);
-    vector3d_copy(entTwo->position, vector3d(-10, -25, -10));
+    vector3d_copy(entTwo->position, vector3d(-10, -25, -10));*/
 
     entThree = gf3d_entity_create_interactable("cube", 4, "test box");
     gf3d_entity_set_bounding_box(entThree, 2, 2, 1, 1);

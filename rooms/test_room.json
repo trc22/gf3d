@@ -12,20 +12,23 @@
 	        {
 		    "count": "1",    
             "0":
-		    {
+		        {
 			    "name": "test door",
 			    "position": ["10", "-46", "-12"],
-                "dest": "none",
+                "dest": "test_room",
                 "locked": "0"
-	   	    }
-	    },
+	   	        }
+	        },
             "pickups":
             {
+            "count": "1",
+            "0":
+                {
                 "name": "test pickup",
-                "position": ["1", "1", "1"],
-                "model": "cube",
-                "interactable": "3",
-                "item": "key"
+			    "position": ["-10", "-25", "-10"],
+                "item": "key",
+                "locked": "0"
+                }
             },
             "enemies":
             {
