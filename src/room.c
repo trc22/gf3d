@@ -205,7 +205,6 @@ void room_load_entities(SJson *sj_room)
         gf3d_entity_set_bounding_box(ent, 2, 2, 1, 1);
 
         ent->interactable->itemName = strdup(sj_get_string_value(sj_ent_dest));
-
     }
 }
 
@@ -238,9 +237,8 @@ void room_change(char* room_name)
     room_free();
     gf3d_entity_free_all();
     room_load(room_name);
-    /*room->mat[3][2] = -5;
     player_spawn(vector3d(0, 0, 0));
-    room_set_camera(vector3d(1, 10, 1),vector3d(3.3, 0, 3.14));*/
+    room_set_camera(vector3d(1, 10, 1),vector3d(3.3, 0, 3.14));
 }
 
 int room_check_bounds(Vector3D position)

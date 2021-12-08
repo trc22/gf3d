@@ -27,7 +27,6 @@ int main(int argc,char *argv[])
     int a;
     Uint8 validate = 0;
     const Uint8 * keys;
-    Entity *ent, *entOne, *entTwo, *entThree;
 
     Sprite *mouse = NULL;
     int mousex,mousey;
@@ -63,35 +62,12 @@ int main(int argc,char *argv[])
 
     room_load("test_room");
 
-    /*ent = gf3d_entity_create_interactable("door", 3, "test door");
-    ent->interactable->dest = "door";
-    ent->interactable->locked = 1;
-    gf3d_entity_set_bounding_box(ent, -2, 1, 10, 10);
-    vector3d_copy(ent->position, vector3d(10, -50, -12));
-    vector3d_copy(ent->scale, vector3d(2, 2, 2));*/
-
-    entOne = gf3d_entity_create_interactable("cube", 1, "test button");
-    entOne->interactable->dest = "test";
-    gf3d_entity_set_bounding_box(entOne, 2, 2, 1, 1);
-    vector3d_copy(entOne->position, vector3d(-0, -25, -10));
-
-    /*entTwo = gf3d_entity_create_interactable("cube", 0, "test pickup");
-    entTwo->interactable->itemName = "key";
-    gf3d_entity_set_bounding_box(entTwo, 2, 2, 1, 1);
-    vector3d_copy(entTwo->position, vector3d(-10, -25, -10));*/
-
-    entThree = gf3d_entity_create_interactable("cube", 4, "test box");
-    gf3d_entity_set_bounding_box(entThree, 2, 2, 1, 1);
-    vector3d_copy(entThree->position, vector3d(10, -25, -10));
-
 
     enemy_spawn(vector3d(-10, -10, 0));
 
     //bounding_box_update(ent->boundingBox, ent->position);
 
     enemy_set_player(player_spawn(vector3d(1, 1, 1)));
-
-    //entOne = gf3d_entity_create_interactable("cube", 3, "test interact");
 
     // main game loop
     slog("gf3d main loop begin");
