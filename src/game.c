@@ -53,7 +53,7 @@ int main(int argc,char *argv[])
     );
 	slog_sync();
 
-	gfc_audio_init(6, 2, 1, 2, 1, 0);
+	//gfc_audio_init(6, 2, 1, 2, 1, 0);
     mouse = gf3d_sprite_load("images/mouse.png",128,128, 1);
 
     menu_init(10);
@@ -106,7 +106,6 @@ int main(int argc,char *argv[])
         gf3d_camera_update_view();
         gf3d_camera_get_view(gf3d_vgraphics_get_view_matrix());
 
-        //menu_update();
 
         gf3d_vgraphics_render_start();
 

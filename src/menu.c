@@ -26,7 +26,7 @@ void window_manager_close()
 
 void menu_init(Uint32 window_max)
 {
-    window_manager.window_list = (Window*)gfc_allocate_array(sizeof(Window*),window_max);
+    window_manager.window_list = (Window*)gfc_allocate_array(sizeof(Window),window_max);
     window_manager.window_max = window_max;
     if (!window_manager.window_list)
     {
