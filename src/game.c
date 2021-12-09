@@ -19,6 +19,7 @@
 #include "player.h"
 #include "room.h"
 #include "enemy.h"
+#include "menu.h"
 
 
 int main(int argc,char *argv[])
@@ -39,6 +40,7 @@ int main(int argc,char *argv[])
         }
     }
 
+
     init_logger("gf3d.log");
     slog("gf3d begin");
     gf3d_vgraphics_init(
@@ -52,13 +54,17 @@ int main(int argc,char *argv[])
 	slog_sync();
 
 	gfc_audio_init(6, 2, 1, 2, 1, 0);
-    mouse = gf3d_sprite_load("images/cursor.png",128,128, 1);
+    mouse = gf3d_sprite_load("images/mouse.png",128,128, 1);
+
+    menu_init(10);
+
+    window_create("images/cursor.png", vector2d(300,300), 128, 128);
 
     gf3d_entity_manager_init(10);
     interactable_init(8);
 
 
-    gfc_sound_play(gfc_sound_load("sounds/but_first_a_dance.mp3", 0.5, 1), 4, 0.5, 1, 1);
+    //gfc_sound_play(gfc_sound_load("sounds/but_first_a_dance.mp3", 0.5, 1), 4, 0.5, 1, 1);
 
     room_load("test_room");
 
@@ -96,15 +102,19 @@ int main(int argc,char *argv[])
         // for each mesh, get a command and configure it from the pool
 
         room_update();
+        menu_update();
         gf3d_camera_update_view();
         gf3d_camera_get_view(gf3d_vgraphics_get_view_matrix());
+
+        //menu_update();
 
         gf3d_vgraphics_render_start();
 
                 room_draw();
                 gf3d_entity_draw_all();
+                menu_draw_all();
 
-        gf3d_sprite_draw(mouse,vector2d(mousex,mousey),vector2d(1,1),0);
+        gf3d_sprite_draw(mouse,vector2d(mousex - 64,mousey - 64),vector2d(1,1),0);
 
         gf3d_vgraphics_render_end();
 
