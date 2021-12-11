@@ -210,6 +210,8 @@ void room_load_entities(SJson *sj_room)
 
 void room_draw()
 {
+    if(!room)
+        return;
     gf3d_model_draw(room->model, room->modelMat);
 }
 

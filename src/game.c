@@ -20,6 +20,7 @@
 #include "room.h"
 #include "enemy.h"
 #include "menu.h"
+#include "main_menu.h"
 
 
 int main(int argc,char *argv[])
@@ -30,6 +31,7 @@ int main(int argc,char *argv[])
     const Uint8 * keys;
 
     Sprite *mouse = NULL;
+
     int mousex,mousey;
 
     for (a = 1; a < argc;a++)
@@ -54,11 +56,12 @@ int main(int argc,char *argv[])
 	slog_sync();
 
 	//gfc_audio_init(6, 2, 1, 2, 1, 0);
-    mouse = gf3d_sprite_load("images/mouse.png",128,128, 1);
+    mouse = gf3d_sprite_load("images/mouse.png",64,64, 1);
 
     menu_init(10);
 
-    window_create("images/cursor.png", vector2d(300,300), 128, 128);
+    main_menu();
+
 
     gf3d_entity_manager_init(10);
     interactable_init(8);
@@ -66,14 +69,12 @@ int main(int argc,char *argv[])
 
     //gfc_sound_play(gfc_sound_load("sounds/but_first_a_dance.mp3", 0.5, 1), 4, 0.5, 1, 1);
 
-    room_load("test_room");
 
-
-    enemy_spawn(vector3d(-10, -10, 0));
+    //enemy_spawn(vector3d(-10, -10, 0));
 
     //bounding_box_update(ent->boundingBox, ent->position);
 
-    enemy_set_player(player_spawn(vector3d(1, 1, 1)));
+    //enemy_set_player(player_spawn(vector3d(1, 1, 1)));
 
     // main game loop
     slog("gf3d main loop begin");
@@ -83,7 +84,6 @@ int main(int argc,char *argv[])
     gf3d_camera_set_position(vector3d(1, 10, 1));
     gf3d_camera_set_rotation(vector3d(3.14, 0, 3.14));
 
-    room_set_camera(vector3d(1, 10, 1),vector3d(3.3, 0, 3.14));
 
 
     while(!done)
@@ -100,7 +100,6 @@ int main(int argc,char *argv[])
 
         // configure render command for graphics command pool
         // for each mesh, get a command and configure it from the pool
-
         room_update();
         menu_update();
         gf3d_camera_update_view();
@@ -113,7 +112,7 @@ int main(int argc,char *argv[])
                 gf3d_entity_draw_all();
                 menu_draw_all();
 
-        gf3d_sprite_draw(mouse,vector2d(mousex - 64,mousey - 64),vector2d(1,1),0);
+        gf3d_sprite_draw(mouse,vector2d(mousex - 32,mousey - 32),vector2d(1,1),0);
 
         gf3d_vgraphics_render_end();
 

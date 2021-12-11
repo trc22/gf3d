@@ -9,6 +9,7 @@ typedef struct
 }WindowManager;
 
 static WindowManager window_manager = {0};
+int inputTimer = 100;
 
 void window_manager_close()
 {
@@ -63,11 +64,17 @@ void menu_update()
     Uint32 mouse;
     int x, y;
 
+    if(inputTimer != 100)
+    {
+        inputTimer++;
+        return;
+    }
     mouse = SDL_GetMouseState(&x, &y);
     if ((mouse & SDL_BUTTON_LMASK) != 0)
     {
         slog("Mouse cursor is at %i, %i", x, y);
         window_check_all(vector2d(x, y));
+        inputTimer = 0;
     }
 }
 
@@ -124,7 +131,10 @@ void window_check_all(Vector2D mousePos)
     for(int i = 0; i < window_manager.window_max; i++)
     {
         if(window_manager.window_list[i]._inuse != 1) continue;
-        window_check(&window_manager.window_list[i],mousePos);
+        if(window_check(&window_manager.window_list[i],mousePos)&& window_manager.window_list[i].on_click)
+        {
+            window_manager.window_list[i].on_click(&window_manager.window_list[i]);
+        }
     }
 }
 
