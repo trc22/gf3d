@@ -1,6 +1,7 @@
 #include "menu.h"
 
 #include "simple_logger.h"
+#include "player.h"
 
 typedef struct
 {
@@ -46,7 +47,7 @@ Window* window_new()
 {
     int i;
 
-    for(int i = 0; i < window_manager.window_max; i++)
+    for(i = 0; i < window_manager.window_max; i++)
     {
         if(window_manager.window_list[i]._inuse == 1) continue;
 
@@ -72,7 +73,6 @@ void menu_update()
     mouse = SDL_GetMouseState(&x, &y);
     if ((mouse & SDL_BUTTON_LMASK) != 0)
     {
-        slog("Mouse cursor is at %i, %i", x, y);
         window_check_all(vector2d(x, y));
         inputTimer = 0;
     }
@@ -82,7 +82,7 @@ void menu_draw_all()
 {
     int i;
 
-    for(int i = 0; i < window_manager.window_max; i++)
+    for(i = 0; i < window_manager.window_max; i++)
     {
         if(window_manager.window_list[i]._inuse == 0) continue;
         window_draw(&window_manager.window_list[i]);
@@ -92,13 +92,19 @@ void menu_draw_all()
 
 void window_draw(Window *window)
 {
+    int x, y;
+
+    SDL_GetMouseState(&x, &y);
     if(!window) return;
-
     if(window->_inuse != 1) return;
-
+    if(window->active != 1) return;
     if(!window->sprite) {slog("No valid sprite");return;}
 
-    gf3d_sprite_draw(window->sprite, vector2d(window->position.x - window->boundingBox.w * 0.5, window->position.y - window->boundingBox.h * 0.5), vector2d(1, 1), 1);
+    if(window->selected == 0)
+        gf3d_sprite_draw(window->sprite, vector2d(window->position.x, window->position.y), vector2d(1, 1), 1);
+    else
+        gf3d_sprite_draw(window->sprite, vector2d(x, y), vector2d(1, 1), 1);
+
 }
 
 int window_check(Window *window, Vector2D mousePos)
@@ -128,14 +134,32 @@ int window_check(Window *window, Vector2D mousePos)
 
 void window_check_all(Vector2D mousePos)
 {
+    Window *window;
     for(int i = 0; i < window_manager.window_max; i++)
     {
         if(window_manager.window_list[i]._inuse != 1) continue;
+        if(window_manager.window_list[i].active != 1) continue;
+        if(window_manager.window_list[i].selected == 1) continue;
+
+
         if(window_check(&window_manager.window_list[i],mousePos)&& window_manager.window_list[i].on_click)
         {
             window_manager.window_list[i].on_click(&window_manager.window_list[i]);
+            return;
         }
     }
+    window = window_get_selected();
+    if(window)
+    {
+        if(inventory_get_item_by_id(window->item_id)->type == 0)
+            return;
+        window->selected = 0;
+        if(!inventory_get_open())
+        {
+            window->active = 0;
+        }
+    }
+
 }
 
 void menu_free()
@@ -161,10 +185,13 @@ Window *window_create(char* image, Vector2D position, int frame_height, int fram
 
     vector2d_copy(window->position, position);
 
-    window->boundingBox.x = 0;
-    window->boundingBox.y = 0;
+    window->boundingBox.x = 1;
+    window->boundingBox.y = 1;
     window->boundingBox.w = frame_width / 2;
     window->boundingBox.h = frame_height / 2;
+
+    window->active = 0;
+    window->selected = 0;
 
     slog("window created");
     return window;
@@ -183,6 +210,16 @@ void window_free(Window* self)
         gf3d_sprite_free(self->sprite);
     if (self->data != NULL)
     {
-        slog("warning: data not freed at entity free!");
+        slog("warning: data not freed at window free!");
     }
+}
+
+Window* window_get_selected()
+{
+    for(int i = 0; i < window_manager.window_max; i++)
+    {
+        if(window_manager.window_list[i].selected)
+            return &window_manager.window_list[i];
+    }
+    return NULL;
 }

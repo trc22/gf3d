@@ -166,7 +166,7 @@ void room_load_entities(SJson *sj_room)
         vector3d_copy(ent->scale, vector3d(2, 2, 2));
 
         ent->interactable->dest = strdup(sj_get_string_value(sj_ent_dest));
-        slog("%s", ent->interactable->dest);
+        slog("door dest: %s", ent->interactable->dest);
 
     }
     sj_pickups = sj_object_get_value(sj_entities, "pickups");

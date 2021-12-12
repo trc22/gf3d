@@ -116,6 +116,7 @@ void interactable_close()
 
 void use_door(Interactable* door)
 {
+    slog("Interacting with door");
     if(!door) return;
     if(door->dest == NULL) return;
 

@@ -15,13 +15,13 @@
 		        {
 			    "name": "test door",
 			    "position": ["10", "-46", "-12"],
-                "dest": "test_room_1",
+                "dest": "test_room",
                 "locked": "0"
 	   	        }
 	        },
             "pickups":
             {
-            "count": "1",
+            "count": "0 ",
             "0":
                 {
                 "name": "test pickup",

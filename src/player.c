@@ -19,8 +19,6 @@ void player_update(Entity *ent);
 void player_think(Entity *ent);
 void player_touch(Entity* self, Entity* other);
 
-void player_inventory_inputs(const Uint8 *keys);
-
 Entity * player_spawn(Vector3D position)
 {
     Entity *ent = gf3d_entity_create("misc");
@@ -30,16 +28,6 @@ Entity * player_spawn(Vector3D position)
     ent->touch = player_touch;
 
     ent->camera_mode = 0;
-
-    inventory_init(8);
-
-    inventory_load_item("test item");
-    inventory_load_item("pistol");
-    inventory_load_item("key");
-    inventory_load_item("health pack");
-    inventory_load_item("ammo_pistol");
-    inventory_load_item("knife");
-
 
 
     gf3d_entity_set_bounding_box(ent, 1, 1, 5, 5);
@@ -151,7 +139,11 @@ void player_think(Entity *ent)
                 input_timer = 0;
             }
 
-            player_inventory_inputs(keys);
+            if(keys[SDL_SCANCODE_TAB])
+            {
+                inventory_display();
+                input_timer = 0;
+            }
 
         }
         else
@@ -192,6 +184,11 @@ void player_touch(Entity* self, Entity* other)
 
 void player_set_current_item(int pos)
 {
+    if(pos == -1)
+    {
+        current_item = NULL;
+        return;
+    }
     current_item = inventory_get_item(pos);
     if(current_item == NULL)
     {
@@ -274,55 +271,5 @@ void player_use_item(Entity* self, Item *item)
             current_item = NULL;
             break;
     }
-}
-
-void player_inventory_inputs(const Uint8* keys)
-{
-    if(keys[SDL_SCANCODE_TAB])
-    {
-        inventory_display_();
-        input_timer = 0;
-    }
-    else if(keys[SDL_SCANCODE_1])
-    {
-        player_set_current_item(0);
-        input_timer = 0;
-    }
-    else if(keys[SDL_SCANCODE_2])
-    {
-        player_set_current_item(1);
-        input_timer = 0;
-    }
-    else if(keys[SDL_SCANCODE_3])
-    {
-        player_set_current_item(2);
-        input_timer = 0;
-    }
-    else if(keys[SDL_SCANCODE_4])
-    {
-        player_set_current_item(3);
-        input_timer = 0;
-    }
-    else if(keys[SDL_SCANCODE_5])
-    {
-        player_set_current_item(4);
-        input_timer = 0;
-    }
-    else if(keys[SDL_SCANCODE_6])
-    {
-        player_set_current_item(5);
-        input_timer = 0;
-    }
-    else if(keys[SDL_SCANCODE_7])
-    {
-        player_set_current_item(6);
-        input_timer = 0;
-    }
-    else if(keys[SDL_SCANCODE_8])
-    {
-        player_set_current_item(7);
-        input_timer = 0;
-    }
-
 }
 

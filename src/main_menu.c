@@ -12,6 +12,7 @@ void main_menu()
     Window *start;
     start = window_create("images/main_menu/start.png", vector2d(400,300), 128, 256);
     start->on_click = start_game;
+    start->active = 1;
 }
 
 void start_game(Window* self)

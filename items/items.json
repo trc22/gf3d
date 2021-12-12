@@ -30,7 +30,7 @@
     {
         "name":"key",
         "id":"4",
-        "type":"1",
+        "type":"0",
         "quantity":"1"
     },
     "ammo_pistol":
@@ -39,5 +39,12 @@
         "id":"5",
         "type":"1",
         "quantity":"12"
+    },
+    "test_combine":
+    {
+        "name":"test combine",
+        "id":"6",
+        "type":"1",
+        "quantity":"1"
     }
 }

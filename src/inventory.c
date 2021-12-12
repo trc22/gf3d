@@ -5,12 +5,16 @@
 #include "simple_json.h"
 
 #include "inventory.h"
+#include "player.h"
 
 typedef struct
 {
     Item *item_list;
     Uint32  item_max;
+    Uint8 is_open;
 }Inventory;
+
+void item_click(Window *window);
 
 static Inventory inventory = {0};
 
@@ -18,6 +22,7 @@ void inventory_init(Uint32 item_max)
 {
     inventory.item_list = (Item*)gfc_allocate_array(sizeof(Item),item_max);
     inventory.item_max = item_max;
+    inventory.is_open = 0;
     if (!inventory.item_list)
     {
         slog("failed to allocate item list");
@@ -72,6 +77,8 @@ void inventory_free_item(Item *item)
         return;
     }
     item->_inuse = 0;
+    if(item->icon)
+        window_free(item->icon);
     if (item->data != NULL)
     {
         slog("warning: data not freed at item free!");
@@ -113,7 +120,7 @@ Item* inventory_load_item(char* item_name)
     SJson* json, *sj_item;
     SJson *sj_id, *sj_name, *sj_type, *sj_quantity;
 
-    Item* item;
+    Item* item, *item_check;
     int id;
     const char* name;
     int type;
@@ -151,7 +158,20 @@ Item* inventory_load_item(char* item_name)
     sj_get_integer_value(sj_quantity, &quantity);
     slog("Item quantity: %i", quantity);
 
+    item_check = inventory_get_item_by_id(id);
+    if(item_check)
+    {
+        slog("%s already in inventory, updating quantity", item_check->name);
+        item_check->quantity += quantity;
+        return item_check;
+    }
+
     item = inventory_item_create(id, name, type, quantity);
+    item->icon = window_create("images/items/test.png", vector2d(100,100), 128, 128);
+    item->icon->on_click = item_click;
+    item->icon->item_id = id;
+    item->combine_result = "test_combine";
+
 
     sj_free(json);
 
@@ -213,20 +233,73 @@ Item* inventory_get_item_by_id(int id)
     return NULL;
 }
 
-void inventory_display_()
+void inventory_display()
 {
     int i;
-    slog("Inventory:");
-    for(int i = 0; i < inventory.item_max; i++)
+    if(inventory.is_open)
+        inventory.is_open = 0;
+    else
+        inventory.is_open = 1;
+
+    for(i = 0; i < inventory.item_max; i++)
     {
-        if(inventory.item_list[i]._inuse != 1)
+        if(inventory.item_list[i]._inuse != 1) continue;
+        if(!inventory.item_list[i].icon) continue;
+
+        inventory.item_list[i].icon->position.x = 100 + 80 * i;
+        inventory.item_list[i].icon->inventory_pos = i;
+        if(!inventory.item_list[i].icon->selected)
+            inventory.item_list[i].icon->active = inventory.is_open;
+        else if(inventory.is_open)
         {
-            slog("%i: Empty", (i + 1));
-            continue;
+            inventory.item_list[i].icon->selected = 0;
+            player_set_current_item(-1);
         }
-
-        slog("%i: %s", (i + 1), inventory.item_list[i].name);
     }
-    slog("Inventory end");
 
+}
+
+void item_click(Window *window)
+{
+    Item *item, *combine;
+    Window* selection;
+
+    if(!window) return;
+
+    item = inventory_get_item_by_id(window->item_id);
+
+    selection = window_get_selected();
+    if(selection)
+    {
+        combine = inventory_get_item_by_id(selection->item_id);
+        item_combine(item, combine);
+        selection->selected = 0;
+        return;
+    }
+    slog("Item %s selected", item->name);
+    player_set_current_item(window->inventory_pos);
+    window->selected = 1;
+}
+
+int item_combine(Item *self, Item *other)
+{
+    char* result;
+    slog("combining %s and %s", self->name, other->name);
+    if(self->combine == other->id)
+    {
+        slog("combined");
+        result = strdup(self->combine_result);
+        inventory_free_item(self);
+        inventory_free_item(other);
+        inventory_load_item(result);
+        return 1;
+    }
+    slog("cannot combine");
+    return 0;
+
+}
+
+Uint8 inventory_get_open()
+{
+    return inventory.is_open;
 }

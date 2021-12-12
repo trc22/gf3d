@@ -2,6 +2,7 @@
 #define __INVENTORY_H__
 
 #include "gfc_types.h"
+#include "menu.h"
 
 typedef enum
 {
@@ -14,12 +15,18 @@ typedef enum
 typedef struct Item_S
 {
     Uint8 _inuse;
+    Uint8 selected;
 
     int id;
     char * name;
     ItemType type;
 
     int quantity;
+
+    int combine;
+    char* combine_result;
+
+    Window* icon;
 
     void *data;
 }Item;
@@ -83,7 +90,9 @@ Item* inventory_get_item(int pos);
 
 Item* inventory_get_item_by_id(int id);
 
-void inventory_display_();
+void inventory_display();
 
+int item_combine(Item *self, Item *other);
 
+Uint8 inventory_get_open();
 #endif

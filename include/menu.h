@@ -7,7 +7,14 @@
 typedef struct Window_S
 {
     Uint8 _inuse;
+
+    Uint8 active;
+    Uint8 selected;
+
     Sprite *sprite;
+
+    int item_id;
+    int inventory_pos;
 
     Vector2D position;
     BoundingBox boundingBox;
@@ -36,5 +43,7 @@ void menu_free();
 void window_free(Window* self);
 
 Window *window_create(char* image, Vector2D position, int frame_height, int frame_width);
+
+Window* window_get_selected();
 
 #endif
