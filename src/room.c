@@ -102,6 +102,9 @@ void room_load(char* room_name)
 
     room_load_entities(sj_room);
 
+    if(strcmp(room_name, "test_edit"))
+        player_spawn(vector3d(0, 0, 0));
+
     sj_free(json);
 
 }
@@ -239,7 +242,6 @@ void room_change(char* room_name)
     room_free();
     gf3d_entity_free_all();
     room_load(room_name);
-    player_spawn(vector3d(0, 0, 0));
     room_set_camera(vector3d(1, 10, 1),vector3d(3.3, 0, 3.14));
 }
 
