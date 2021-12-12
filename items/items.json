@@ -3,7 +3,9 @@
         "name":"test item",
         "id":"0",
         "type":"1",
-        "quantity":"1"
+        "quantity":"1",
+        "combine": "0",
+        "result": "test_combine"
     },
     "pistol":
     {

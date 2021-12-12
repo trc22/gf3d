@@ -46,4 +46,7 @@ Window *window_create(char* image, Vector2D position, int frame_height, int fram
 
 Window* window_get_selected();
 
+Uint8 get_loading();
+void set_loading(Uint8 in);
+
 #endif

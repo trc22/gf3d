@@ -31,6 +31,7 @@ int main(int argc,char *argv[])
     const Uint8 * keys;
 
     Sprite *mouse = NULL;
+    Sprite *loading = NULL;
 
     int mousex,mousey;
 
@@ -65,7 +66,7 @@ int main(int argc,char *argv[])
 
     gf3d_entity_manager_init(10);
     interactable_init(8);
-
+    loading = gf3d_sprite_load("images/loading.png", 1600, 1200, 1);
 
     //gfc_sound_play(gfc_sound_load("sounds/but_first_a_dance.mp3", 0.5, 1), 4, 0.5, 1, 1);
 
@@ -84,8 +85,6 @@ int main(int argc,char *argv[])
     gf3d_camera_set_position(vector3d(1, 10, 1));
     gf3d_camera_set_rotation(vector3d(3.14, 0, 3.14));
 
-    player_spawn(vector3d(1, 1, 1));
-
     inventory_init(8);
     inventory_load_item("test item")->icon= window_create("images/items/test_1.png", vector2d(100,100), 128, 128);
     inventory_load_item("pistol")->icon= window_create("images/items/test_2.png", vector2d(100,100), 128, 128);
@@ -94,6 +93,7 @@ int main(int argc,char *argv[])
     inventory_load_item("ammo_pistol")->combine = 2;
     inventory_load_item("knife")->combine = 5;
 
+    set_loading(1);
 
     while(!done)
     {
@@ -119,9 +119,12 @@ int main(int argc,char *argv[])
 
                 room_draw();
                 gf3d_entity_draw_all();
+                if(get_loading())
+                    gf3d_sprite_draw(loading, vector2d(0,0), vector2d(1,1), 0);
                 menu_draw_all();
 
         gf3d_sprite_draw(mouse,vector2d(mousex - 32,mousey - 32),vector2d(1,1),0);
+
 
         gf3d_vgraphics_render_end();
 

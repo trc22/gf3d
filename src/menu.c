@@ -7,6 +7,7 @@ typedef struct
 {
     Window *window_list;
     Uint32  window_max;
+    Uint8 loading;
 }WindowManager;
 
 static WindowManager window_manager = {0};
@@ -39,6 +40,7 @@ void menu_init(Uint32 window_max)
     {
         window_manager.window_list[i]._inuse = 0;
     }
+    window_manager.loading = 0;
     slog("Window system initialized");
     atexit(window_manager_close);
 }
@@ -223,3 +225,14 @@ Window* window_get_selected()
     }
     return NULL;
 }
+
+Uint8 get_loading()
+{
+    return window_manager.loading;
+}
+
+void set_loading(Uint8 in)
+{
+    window_manager.loading = in;
+}
+

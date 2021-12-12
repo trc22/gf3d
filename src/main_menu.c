@@ -19,6 +19,8 @@ void start_game(Window* self)
 {
     room_load("test_room");
     room_set_camera(vector3d(1, 10, 1),vector3d(3.3, 0, 3.14));
+    set_loading(0);
+
 
     window_free(self);
 
