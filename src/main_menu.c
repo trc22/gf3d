@@ -32,12 +32,12 @@ void start_game(Window* self)
     room_set_camera(vector3d(1, 10, 1),vector3d(3.3, 0, 3.14));
 
     inventory_init(8);
-    inventory_load_item("test item")->icon= window_create("images/items/test_1.png", vector2d(100,100), 128, 128);
-    inventory_load_item("pistol")->icon= window_create("images/items/test_2.png", vector2d(100,100), 128, 128);
-    //inventory_load_item("key")->icon= window_create("images/items/test_3.png", vector2d(100,100), 128, 128);
-    inventory_load_item("health pack")->icon= window_create("images/items/test_4.png", vector2d(100,100), 128, 128);
-    inventory_load_item("ammo_pistol")->combine = 2;
-    inventory_load_item("knife")->combine = 5;
+    inventory_load_item("test item");//->icon= window_create("images/items/test_1.png", vector2d(100,100), 128, 128);
+    inventory_load_item("pistol");//->icon= window_create("images/items/test_2.png", vector2d(100,100), 128, 128);
+    inventory_load_item("key");//->icon= window_create("images/items/test_3.png", vector2d(100,100), 128, 128);
+    inventory_load_item("health pack");//->icon= window_create("images/items/test_4.png", vector2d(100,100), 128, 128);
+    inventory_load_item("ammo_pistol");//->combine = 2;
+    inventory_load_item("knife");//->combine = 5;
 
     set_loading(0);
 

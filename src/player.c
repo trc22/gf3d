@@ -8,6 +8,7 @@
 #include "player.h"
 #include "interactable.h"
 #include "room.h"
+#include "weapon.h"
 
 UniformBufferObject ubo;
 
@@ -227,6 +228,7 @@ void player_use_item(Entity* self, Item *item)
 
             slog("Using pistol");
             item->quantity--;
+            weapon_use_pistol(item, self);
             slog("Pistol fired, %i shots remaining", item->quantity);
             break;
         case 2:

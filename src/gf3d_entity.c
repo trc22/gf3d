@@ -196,12 +196,12 @@ void gf3d_entity_set_bounding_box(Entity* ent, int x, int y, int h, int w)
 void gf3d_entity_overlap_all()
 {
     int i, j;
-    for(int i = 0; i < gf3d_entity_manager.entity_max; i++)
+    for(i = 0; i < gf3d_entity_manager.entity_max; i++)
     {
         if(!gf3d_entity_manager.entity_list[i]._inuse) continue;
         if(gf3d_entity_manager.entity_list[i].boundingBox == NULL) continue;
 
-        for(int j = 1; j < gf3d_entity_manager.entity_max; j++)
+        for(j = 1; j < gf3d_entity_manager.entity_max; j++)
         {
             if(i == j) continue;
             if(!gf3d_entity_manager.entity_list[j]._inuse) continue;
@@ -243,4 +243,23 @@ Entity* gf3d_entity_get_by_id(int id)
     return &gf3d_entity_manager.entity_list[id];
 }
 
+void gf3d_entity_weapon_check_all(Vector2D ray_start, Vector2D ray_end)
+{
+    int i;
+
+    slog("Checking for collisions");
+
+    for(i = 0; i < gf3d_entity_manager.entity_max; i++)
+    {
+        if(!gf3d_entity_manager.entity_list[i]._inuse) continue;
+        if(gf3d_entity_manager.entity_list[i].boundingBox == NULL) continue;
+        if(gf3d_entity_manager.entity_list[i].camera_mode) continue;
+
+        if(bounding_box_line_intersect(ray_start, ray_end, gf3d_entity_manager.entity_list[i].boundingBox, gf3d_entity_manager.entity_list[i].position))
+        {
+            slog("Hit something");
+            gf3d_entity_free(& gf3d_entity_manager.entity_list[i]);
+        }
+    }
+}
 /*eol@eof*/

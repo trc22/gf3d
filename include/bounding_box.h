@@ -18,4 +18,6 @@ int bounding_box_overlap(BoundingBox* A, BoundingBox* B, Vector3D posA, Vector3D
 
 void bounding_box_update(BoundingBox *box, Vector3D position);
 
+int bounding_box_line_intersect(Vector2D p1, Vector2D p2, BoundingBox *box, Vector3D position);
+
 #endif

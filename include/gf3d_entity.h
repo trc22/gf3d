@@ -80,4 +80,6 @@ void gf3d_entity_check_enemies_distance(Entity* ent);
 
 Entity* gf3d_entity_get_by_id(int id);
 
+void gf3d_entity_weapon_check_all(Vector2D ray_start, Vector2D ray_end);
+
 #endif
