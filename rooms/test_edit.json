@@ -1,1 +1,1 @@
-{"test_edit":{"name":"test room","model":"room","scale":["5","10","5"],"position":["1","1","-12"],"boundaries":["20","-20","5","-45"],"entities:":{"doors":{"count":"0"},"pickups":{"count":"0"}}}}
+{"test_edit":{"name":"test room","model":"room","scale":["5","10","5"],"position":["1","1","-12"],"boundaries":["20","-20","5","-45"],"entities:":{"doors":{"0":{"name":"test door","position":["22","-45","0"],"dest":"test_room"},"count":"1"},"pickups":{"0":{"name":"test pickup","position":["-3","-14","0"],"item":"key"},"count":"1"}}}}

@@ -261,13 +261,35 @@ void gf3d_entity_weapon_check_all(Vector2D ray_start, Vector2D ray_end)
         {
             slog("Hit something");
             gf3d_entity_free(& gf3d_entity_manager.entity_list[i]);
+            return;
         }
     }
 }
 
+void gf3d_entity_weapon_check_all_multiple(Vector2D ray_start, Vector2D ray_end)
+{
+    int i;
+
+    slog("Checking for collisions");
+
+    for(i = 0; i < gf3d_entity_manager.entity_max; i++)
+    {
+        if(!gf3d_entity_manager.entity_list[i]._inuse) continue;
+        if(gf3d_entity_manager.entity_list[i].boundingBox == NULL) continue;
+        if(gf3d_entity_manager.entity_list[i].camera_mode) continue;
+
+        if(bounding_box_line_intersect(ray_start, ray_end, gf3d_entity_manager.entity_list[i].boundingBox, gf3d_entity_manager.entity_list[i].position))
+        {
+            slog("Hit something");
+            gf3d_entity_free(& gf3d_entity_manager.entity_list[i]);
+        }
+    }
+}
+
+
 Entity* gf3d_entity_get_boss()
 {
-int i;
+    int i;
 
     slog("Checking for collisions");
 

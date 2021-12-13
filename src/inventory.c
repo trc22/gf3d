@@ -118,11 +118,12 @@ Item* inventory_item_create(int id, const char* name, ItemType type, int quantit
 Item* inventory_load_item(char* item_name)
 {
     SJson* json, *sj_item;
-    SJson *sj_id, *sj_name, *sj_type, *sj_quantity;
+    SJson *sj_id, *sj_name, *sj_type, *sj_quantity, *sj_sprite;
 
     Item* item, *item_check;
     int id;
     const char* name;
+    const char* sprite;
     int type;
     int quantity;
 
@@ -165,9 +166,11 @@ Item* inventory_load_item(char* item_name)
         item_check->quantity += quantity;
         return item_check;
     }
+    sj_sprite = sj_object_get_value(sj_item, "sprite");
+    sprite = sj_get_string_value(sj_sprite);
 
     item = inventory_item_create(id, name, type, quantity);
-    item->icon = window_create("images/items/test.png", vector2d(100,100), 128, 128);
+    item->icon = window_create(strdup(sprite), vector2d(100,100), 128, 128);
     item->icon->on_click = item_click;
     item->icon->item_id = id;
     item->combine_result = "test_combine";

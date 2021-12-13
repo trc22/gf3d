@@ -4,6 +4,7 @@
         "id":"0",
         "type":"1",
         "quantity":"1",
+        "sprite": "images/items/test.png",
         "combine": "0",
         "result": "test_combine"
     },
@@ -12,41 +13,63 @@
         "name":"pistol",
         "id":"1",
         "type":"0",
-        "quantity":"12"
+        "quantity":"12",
+        "sprite": "images/items/pistol.png"
     },
     "knife":
     {
         "name":"knife",
         "id":"2",
         "type":"0",
-        "quantity":"1"
+        "quantity":"1",
+        "sprite": "images/items/test.png"
     },
     "health pack":
     {
         "name":"health pack",
         "id":"3",
         "type":"3",
-        "quantity":"1"
+        "quantity":"1",
+        "sprite": "images/items/test.png"
     },
     "key":
     {
         "name":"key",
         "id":"4",
         "type":"0",
-        "quantity":"1"
+        "quantity":"1",
+        "sprite": "images/items/test.png"
     },
     "ammo_pistol":
     {
         "name":"pistol ammo",
         "id":"5",
         "type":"1",
-        "quantity":"12"
+        "quantity":"12",
+        "sprite": "images/items/test.png"
     },
     "test_combine":
     {
         "name":"test combine",
         "id":"6",
         "type":"1",
-        "quantity":"1"
+        "quantity":"1",
+        "sprite": "images/items/test.png"
+    },
+    "shotgun":
+    {
+        "name":"shotgun",
+        "id":"7",
+        "type":"0",
+        "quantity":"4",
+        "sprite": "images/items/test.png"
+    },
+    "rifle":
+    {
+        "name":"rifle",
+        "id":"7",
+        "type":"0",
+        "quantity":"6",
+        "sprite": "images/items/test.png"
     }
 }

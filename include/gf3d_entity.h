@@ -83,6 +83,8 @@ Entity* gf3d_entity_get_by_id(int id);
 
 void gf3d_entity_weapon_check_all(Vector2D ray_start, Vector2D ray_end);
 
+void gf3d_entity_weapon_check_all_multiple(Vector2D ray_start, Vector2D ray_end);
+
 Entity* gf3d_entity_get_boss();
 
 
