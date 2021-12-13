@@ -15,7 +15,7 @@
 		        {
 			    "name": "test door",
 			    "position": ["10", "-46", "-12"],
-                "dest": "test_room",
+                "dest": "boss_room",
                 "locked": "0"
 	   	        }
 	        },

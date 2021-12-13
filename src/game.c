@@ -57,7 +57,7 @@ int main(int argc,char *argv[])
     );
 	slog_sync();
 
-	//gfc_audio_init(6, 2, 1, 2, 1, 0);
+	gfc_audio_init(6, 2, 1, 2, 1, 0);
     mouse = gf3d_sprite_load("images/mouse.png",64,64, 1);
 
     menu_init(12);
@@ -69,7 +69,7 @@ int main(int argc,char *argv[])
     interactable_init(8);
     loading = gf3d_sprite_load("images/loading.png", 1600, 1200, 1);
 
-    //gfc_sound_play(gfc_sound_load("sounds/but_first_a_dance.mp3", 0.5, 1), 4, 0.5, 1, 1);
+    gfc_sound_play(gfc_sound_load("sounds/but_first_a_dance.mp3", 0.5, 1), 4, 0.5, 1, 1);
 
 
     //enemy_spawn(vector3d(-10, -10, 0));

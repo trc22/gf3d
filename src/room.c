@@ -6,6 +6,7 @@
 #include "gf3d_entity.h"
 #include "player.h"
 #include "room.h"
+#include "enemy.h"
 
 Room *room;
 
@@ -24,6 +25,7 @@ void room_load(char* room_name)
     TextLine assetname;
 
     SJson* json, *sj_room, *sj_model, *sj_temp, *sj_extents, *sj_position, *sj_scale;
+    Entity*_player, *button;
     const char *model_name;
 
     snprintf(assetname,GFCLINELEN,"rooms/%s.json",room_name);
@@ -103,7 +105,35 @@ void room_load(char* room_name)
     room_load_entities(sj_room);
 
     if(strcmp(room_name, "test_edit"))
-        player_spawn(vector3d(0, 0, 0));
+        _player = player_spawn(vector3d(0, 0, 0));
+
+    if(!strcmp(room_name, "boss_room"))
+    {
+        enemy_spawn_boss(vector3d(0,-10,10));
+        gf3d_camera_set_rotation(vector3d(-1.7, 0, 0));
+        gf3d_camera_set_position(vector3d(0, -5, 80));
+        vector3d_copy(room->currentCamera->rotation, vector3d(-1.7, 0, 0));
+        vector3d_copy(room->currentCamera->position, vector3d(0, -5, 80));
+        vector3d_copy(_player->position, vector3d(0, 20, 0));
+
+        button = gf3d_entity_create_interactable("cube", IT_Button, "button");
+        button->interactable->dest = "";
+        gf3d_entity_set_bounding_box(button, 2, 2, 1, 1);
+        vector3d_copy(button->position, vector3d(0, 30, -10));
+
+        button = gf3d_entity_create_interactable("cube", IT_Button, "button");
+        button->interactable->dest = "";
+        gf3d_entity_set_bounding_box(button, 2, 2, 1, 1);
+        vector3d_copy(button->position, vector3d(40, -15, -10));
+
+        button = gf3d_entity_create_interactable("cube", IT_Button, "button");
+        button->interactable->dest = "";
+        gf3d_entity_set_bounding_box(button, 2, 2, 1, 1);
+        vector3d_copy(button->position, vector3d(-40, -15, -10));
+
+        enemy_set_player(_player);
+
+    }
 
     sj_free(json);
 
@@ -242,7 +272,6 @@ void room_change(char* room_name)
     room_free();
     gf3d_entity_free_all();
     room_load(room_name);
-    room_set_camera(vector3d(1, 10, 1),vector3d(3.3, 0, 3.14));
 }
 
 int room_check_bounds(Vector3D position)

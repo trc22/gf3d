@@ -155,11 +155,25 @@ void use_pickup(Interactable *pickup)
 void use_button(Interactable *button)
 {
     int i;
+    Entity * ent;
 
     if(!button) return;
     if(button->dest == NULL) return;
 
+
     slog("You press the button");
+    ent = gf3d_entity_get_boss();
+    if(ent)
+    {
+        button->dest = NULL;
+        ent->misc --;
+        if(ent->misc == 0)
+        {
+            gf3d_entity_free(ent);
+            return;
+        }
+    return;
+    }
 
     for (i = 0; i < interactable_manager.interact_max; i++)
     {

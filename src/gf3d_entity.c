@@ -264,4 +264,21 @@ void gf3d_entity_weapon_check_all(Vector2D ray_start, Vector2D ray_end)
         }
     }
 }
+
+Entity* gf3d_entity_get_boss()
+{
+int i;
+
+    slog("Checking for collisions");
+
+    for(i = 0; i < gf3d_entity_manager.entity_max; i++)
+    {
+        if(!gf3d_entity_manager.entity_list[i]._inuse) continue;
+        if(gf3d_entity_manager.entity_list[i].isEnemy != 2) continue;
+
+        return &gf3d_entity_manager.entity_list[i];
+
+    }
+    return NULL;
+}
 /*eol@eof*/

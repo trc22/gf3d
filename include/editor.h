@@ -11,4 +11,6 @@ void level_editor_update();
 
 void level_editor_save();
 
+void level_editor_write_ent();
+
 #endif

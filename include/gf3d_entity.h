@@ -32,6 +32,7 @@ typedef struct Entity_S
     float           health;
     float           healthmax;
     int camera_mode;
+    int misc;
     void *data;                     /**<additional entity specific data*/
 
 }Entity;
@@ -81,5 +82,8 @@ void gf3d_entity_check_enemies_distance(Entity* ent);
 Entity* gf3d_entity_get_by_id(int id);
 
 void gf3d_entity_weapon_check_all(Vector2D ray_start, Vector2D ray_end);
+
+Entity* gf3d_entity_get_boss();
+
 
 #endif
