@@ -22,7 +22,7 @@
         "id":"2",
         "type":"0",
         "quantity":"1",
-        "sprite": "images/items/test.png"
+        "sprite": "images/items/knife.png"
     },
     "health pack":
     {
@@ -38,7 +38,7 @@
         "id":"4",
         "type":"0",
         "quantity":"1",
-        "sprite": "images/items/test.png"
+        "sprite": "images/items/key.png"
     },
     "ammo_pistol":
     {
@@ -62,7 +62,7 @@
         "id":"7",
         "type":"0",
         "quantity":"4",
-        "sprite": "images/items/test.png"
+        "sprite": "images/items/shotgun.png"
     },
     "rifle":
     {
@@ -70,6 +70,6 @@
         "id":"8",
         "type":"0",
         "quantity":"6",
-        "sprite": "images/items/test.png"
+        "sprite": "images/items/rifle.png"
     }
 }
