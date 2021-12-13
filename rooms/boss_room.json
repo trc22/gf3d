@@ -1,0 +1,44 @@
+{   "boss_room":
+    {
+        "name":"boss room",
+        "id":"0",
+        "model": "room",
+        "scale": ["10", "10", "5"],
+        "position": ["1", "0", "-12"],
+        "boundaries":["45", "-45", "45", "-30"],
+        "entities":
+        {
+            "doors":
+	        {
+		    "count": "0",    
+            "0":
+		        {
+			    "name": "test door",
+			    "position": ["10", "-46", "-12"],
+                "dest": "test_room",
+                "locked": "0"
+	   	        }
+	        },
+            "pickups":
+            {
+            "count": "0 ",
+            "0":
+                {
+                "name": "test pickup",
+			    "position": ["-10", "-25", "-10"],
+                "item": "key",
+                "locked": "0"
+                }
+            },
+            "enemies":
+            {
+                "name": "test enemy",
+                "position": ["1", "1", "1"],
+                "model": "misc",
+                "interactable": "-1",
+                "isEnemy": "0",
+                "item": "key"
+            }
+        }
+    }
+}

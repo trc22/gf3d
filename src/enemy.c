@@ -68,6 +68,9 @@ void enemy_think(Entity *ent)
             ent->position.y -= 0.01 * (cos(ent->rotation.z));
 
         }
+        else
+            gf3d_entity_free(player);
+
         return;
     }
     if(!vector3d_distance_between_less_than(ent->position, player->position, 8))
