@@ -67,7 +67,7 @@
     "rifle":
     {
         "name":"rifle",
-        "id":"7",
+        "id":"8",
         "type":"0",
         "quantity":"6",
         "sprite": "images/items/test.png"

@@ -272,6 +272,22 @@ void player_use_item(Entity* self, Item *item)
 
             current_item = NULL;
             break;
+        case 7:
+            item->quantity --;
+            weapon_use_shotgun(current_item, self);
+            if(item->quantity <= 0)
+                inventory_free_item(item);
+            current_item = NULL;
+            break;
+        case 8:
+            item->quantity --;
+            weapon_use_rifle(current_item, self);
+            if(item->quantity <= 0)
+            {
+                inventory_free_item(item);
+                current_item = NULL;
+            }
+            break;
     }
 }
 

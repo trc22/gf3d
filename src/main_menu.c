@@ -36,8 +36,11 @@ void start_game(Window* self)
     inventory_init(8);
     inventory_load_item("pistol");//->icon= window_create("images/items/test_2.png", vector2d(100,100), 128, 128);
     inventory_load_item("key");//->icon= window_create("images/items/test_3.png", vector2d(100,100), 128, 128);
-    inventory_load_item("ammo_pistol");//->combine = 2;
-    inventory_load_item("knife");//->combine = 5;
+    inventory_load_item("ammo_pistol")->combine = 2;
+    inventory_load_item("knife")->combine = 5;
+    inventory_load_item("shotgun");
+    inventory_load_item("rifle");
+
 
     set_loading(0);
 
