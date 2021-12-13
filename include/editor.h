@@ -9,4 +9,6 @@ void level_editor_click();
 
 void level_editor_update();
 
+void level_editor_save();
+
 #endif
