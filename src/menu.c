@@ -235,4 +235,3 @@ void set_loading(Uint8 in)
 {
     window_manager.loading = in;
 }
-

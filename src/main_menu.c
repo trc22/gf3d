@@ -2,6 +2,8 @@
 #include "menu.h"
 #include "room.h"
 #include "player.h"
+#include "editor.h"
+
 
 int mode = 0;
 
@@ -53,5 +55,6 @@ void level_editor(Window* self)
     gf3d_camera_set_position(vector3d(0, -10, 100));
     set_loading(0);
 
+    level_editor_init();
     window_free(self);
 }

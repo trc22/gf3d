@@ -233,7 +233,9 @@ void gf3d_entity_check_enemies_distance(Entity* ent)
         if(gf3d_entity_manager.entity_list[i]._inuse != 1) continue;
         if(gf3d_entity_manager.entity_list[i].isEnemy != 1) continue;
         if(vector3d_distance_between_less_than(ent->position, gf3d_entity_manager.entity_list[i].position, 8))
-            gf3d_entity_manager.entity_list[i]._inuse = 0;
+        {
+            gf3d_entity_free(&gf3d_entity_manager.entity_list[i]);
+        }
     }
 }
 

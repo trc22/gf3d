@@ -21,6 +21,7 @@
 #include "enemy.h"
 #include "menu.h"
 #include "main_menu.h"
+#include "editor.h"
 
 
 int main(int argc,char *argv[])
@@ -103,6 +104,7 @@ int main(int argc,char *argv[])
         // for each mesh, get a command and configure it from the pool
         room_update();
         menu_update();
+        level_editor_update();
         gf3d_camera_update_view();
         gf3d_camera_get_view(gf3d_vgraphics_get_view_matrix());
 
